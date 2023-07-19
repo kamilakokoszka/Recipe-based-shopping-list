@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{%  block content %}
+<div>
+    <p>
+        You have {{ no_of_shopping_lists }} active shopping lists right now.
+    </p>
+    <p href="">View all lists</p>
+    <p href="">Create new list</p>
+</div>
+<div>
+    <p>
+        You have {{ no_of_recipes }} recipes in your cooking book.
+    </p>
+    <p href="">View cooking book</p>
+    <p href="">Add new recipe</p>
+</div>
+<div>
+    <p>
+        You have {{ no_of_ingredients }} different ingredients in your database.
+    </p>
+    <p href="">View all ingredients</p>
+    <p href="">Add new ingredient</p>
+</div>
+{% endblock %}

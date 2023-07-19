@@ -5,12 +5,12 @@ from django.db.models import SET_NULL
 UNITS = (
     ('g', 'gram'),
     ('kg', 'kilogram'),
-    ('ml', 'mililitr'),
-    ('l', 'litr'),
-    ('szt.', 'sztuka'),
-    ('łyżeczka', 'łyżeczka'),
-    ('łyżka', 'łyżka'),
-    ('szcz.', 'szczypta')
+    ('ml', 'milliliter'),
+    ('l', 'liter'),
+    ('pc', 'piece'),
+    ('tsp', 'teaspoon'),
+    ('tbsp', 'tablespoon'),
+    ('pinch', 'pinch')
 )
 
 

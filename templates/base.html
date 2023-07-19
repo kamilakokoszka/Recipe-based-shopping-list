@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe based shopping list</title>
+</head>
+<body>
+    <nav>
+        {% if request.user.is_authentiated %}
+        {{ user }}
+        <a href="">Logout</a>
+        {% else %}
+        <a href="">Login</a>
+        {% endif %}
+    </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

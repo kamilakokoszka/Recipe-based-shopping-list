@@ -27,6 +27,7 @@ urlpatterns = [
                                                 authentication_form=UserLoginForm,
                                                 next_page='home-page'),
          name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout')
-
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('recipes/', views.RecipeListView.as_view(), name='recipe-list'),
+    path('add-recipe/', views.CreateRecipeView.as_view(), name='add-recipe')
 ]

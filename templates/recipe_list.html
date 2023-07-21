@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %} Recipe list {% endblock %}
+
+{%  block content %}
+    <div>
+        {% if not recipes %}
+            You don't have any recipes yet.
+        {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Recipe</th>
+                        <th>No. of ingredients</th>
+                        <th>Portions</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for recipe in recipes %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ recipe.name }}</td>
+                            <td>{{ recipe.no_of_ingredients }}</td>
+                            <td>{{ recipe.portions }}</td>
+                            <td>
+                                <a href="">Edit</a>
+                                <a href="">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        <a href="{% url 'add-recipe' %}">Add recipe</a>
+    </div>
+{% endblock %}

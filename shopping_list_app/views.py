@@ -3,12 +3,12 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, FormView, ListView, TemplateView
+from django.views.generic import CreateView, FormView, ListView, TemplateView, UpdateView, DeleteView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 
-from shopping_list_app.forms import UserLoginForm, RecipeForm, IngredientFormset
+from shopping_list_app.forms import UserLoginForm, RecipeForm, IngredientFormset, RecipeUpdateForm
 from shopping_list_app.models import ShoppingList, Recipe, Ingredient, Category
 
 
@@ -72,7 +72,7 @@ class CreateRecipeView(LoginRequiredMixin, TemplateView):
     login_url = '/login/'
 
     def get(self, *args, **kwargs):
-        form = RecipeForm()
+        form = RecipeUpdateForm()
         formset = IngredientFormset(queryset=Ingredient.objects.none())
         return self.render_to_response({'form': form,
                                         'ingredient_formset': formset})
@@ -93,3 +93,23 @@ class CreateRecipeView(LoginRequiredMixin, TemplateView):
 
         return self.render_to_response({'form': form,
                                         'ingredient_formset': formset})
+
+
+class RecipeDeleteView(DeleteView):
+    def get(self, request, recipe_id):
+        recipe = Recipe.objects.get(id=recipe_id)
+        recipe.delete()
+        return redirect('recipe-list')
+
+
+
+
+"""class RecipeUpdateView(LoginRequiredMixin, TemplateView):
+    template_name = 'recipe_update.html'
+    login_url = '/login/'
+
+    def get(self, request, recipe_id):
+        recipe = Recipe.objects.get(id=recipe_id)
+        return render(request, 'recipe_update.html', {'recipe': recipe})"""
+
+

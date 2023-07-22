@@ -25,8 +25,8 @@
                             <td>{{ recipe.no_of_ingredients }}</td>
                             <td>{{ recipe.portions }}</td>
                             <td>
-                                <a href="">Edit</a>
-                                <a href="">Delete</a>
+                                <a href="">View</a>
+                                <a href="{% url 'delete-recipe' recipe_id=recipe.id %}">Delete</a>
                             </td>
                         </tr>
                     {% endfor %}

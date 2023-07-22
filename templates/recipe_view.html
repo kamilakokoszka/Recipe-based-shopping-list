@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %} Recipe list {% endblock %}
+
+{%  block content %}
+    <div>
+        <h1> {{ recipe.name }}</h1>
+        <p>( {{ recipe.portions }} portions )</p>
+        <p>Link to full recipe:</p>
+        <a href="{{ recipe.link }}">Click!</a>
+        <h3>Description:</h3>
+        <p>{{ recipe.description }}</p>
+        <h3>Ingredients:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Ingredient</th>
+                        <th>Quantity</th>
+                        <th>Unit</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ingredient in ingredients %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ ingredient.name }}</td>
+                            <td>{{ ingredient.quantity }}</td>
+                            <td>{{ ingredient.unit }}</td>
+                            <td>{{ ingredient.category }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        <a href="">Modify recipe</a>
+        <a href="{% url 'delete-recipe' recipe_id=recipe.id %}">Delete recipe</a>
+    </div>
+{% endblock %}

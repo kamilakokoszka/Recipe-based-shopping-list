@@ -95,11 +95,23 @@ class CreateRecipeView(LoginRequiredMixin, TemplateView):
                                         'ingredient_formset': formset})
 
 
-class RecipeDeleteView(DeleteView):
+class RecipeDeleteView(LoginRequiredMixin, DeleteView):
+    login_url = '/login/'
+
     def get(self, request, recipe_id):
         recipe = Recipe.objects.get(id=recipe_id)
         recipe.delete()
         return redirect('recipe-list')
+
+
+class RecipeDetailsView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request, recipe_id):
+        recipe = Recipe.objects.get(id=recipe_id)
+        ingredients = recipe.ingredients.all()
+        return render(request, 'recipe_view.html', {'recipe': recipe,
+                                                    'ingredients': ingredients})
 
 
 

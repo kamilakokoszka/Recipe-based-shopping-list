@@ -29,6 +29,7 @@ urlpatterns = [
          name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     path('recipes/', views.RecipeListView.as_view(), name='recipe-list'),
+    path('recipe/details/<int:recipe_id>/', views.RecipeDetailsView.as_view(), name='recipe-details'),
     path('add-recipe/', views.CreateRecipeView.as_view(), name='add-recipe'),
     path('recipe/delete/<int:recipe_id>/', views.RecipeDeleteView.as_view(), name='delete-recipe')
     #path('edit-recipe/<int:pk>/', views.RecipeUpdateView.as_view(), name='edit-recipe')

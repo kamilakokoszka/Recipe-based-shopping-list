@@ -1,41 +1,31 @@
 from django.db import models
 from django.contrib.auth.models import User, AbstractUser
-from django.db.models import SET_NULL
 
 UNITS = (
     ('g', 'gram'),
-    ('kg', 'kilogram'),
     ('ml', 'milliliter'),
-    ('l', 'liter'),
     ('pc', 'piece'),
     ('tsp', 'teaspoon'),
     ('tbsp', 'tablespoon'),
     ('pinch', 'pinch')
 )
 
-
-class Category(models.Model):
-    name = models.CharField(max_length=32)
-
-    def __str__(self):
-        return self.name
-
-
-class Ingredient(models.Model):
-    name = models.CharField(max_length=64)
-    quantity = models.FloatField()
-    unit = models.CharField(choices=UNITS, default='g', max_length=32)
-    category = models.ForeignKey(Category, blank=True, null=True, on_delete=SET_NULL)
-
-    def __str__(self):
-        return self.name
-
+CATEGORIES = (
+    ('bakery and bread', ' Bakery and Bread'),
+    ('meat and seafood', 'Meat and Seafood'),
+    ('pasta and rice', 'Pasta and Rice'),
+    ('oils and sauces', 'Oils and Sauces'),
+    ('dairy and eggs', 'Dairy and eggs'),
+    ('fruits', 'Fruits'),
+    ('vegetables', 'Vegetables'),
+    ('spices', 'Spices'),
+    ('other', 'Other')
+)
 
 class Recipe(models.Model):
     name = models.CharField(max_length=128)
     description = models.CharField(blank=True, null=True, max_length=300)
     link = models.CharField(max_length=300, null=True, blank=True)
-    ingredients = models.ManyToManyField(Ingredient, related_name='recipes')
     portions = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -46,8 +36,24 @@ class Recipe(models.Model):
         return self.ingredients.count()
 
 
+class Ingredient(models.Model):
+    name = models.CharField(max_length=64)
+    quantity = models.FloatField(max_length=6)
+    unit = models.CharField(choices=UNITS, default='g')
+    category = models.CharField(choices=CATEGORIES, default='Other')
+    recipe = models.ForeignKey(Recipe, related_name='ingredients', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class IndependentIngredient(Ingredient):
+    pass
+
+
 class ShoppingList(models.Model):
-    ingredients = models.ManyToManyField(Ingredient)
+    name = models.CharField(max_length=128, default='Shopping list')
+    recipes = models.ManyToManyField(Recipe)
     creation_date = models.DateField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 

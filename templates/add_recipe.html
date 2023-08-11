@@ -3,6 +3,7 @@
 {% block title %} Add recipe {% endblock %}
 
 {% block content %}
+    <h1> Create recipe</h1>
     <form id="form-container" method="post">
         {% csrf_token %}
         {{ form.as_p }}
@@ -16,29 +17,36 @@
             {% endfor %}
             <button id="add-form" type="button">Add ingredient</button>
         </div>
-        <input type="submit" name="add-recipe" value="Add recipe">
+        <input type="submit" value="Add recipe">
     </form>
 
     <script>
-        let ingredientForm = document.querySelectorAll(".ingredient-form")
-        let container = document.querySelector("#ingr-form-container")
-        let addButton = document.querySelector("#add-form")
-        let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
+        let ingredientForm = document.querySelectorAll(".ingredient-form");
+        let container = document.querySelector("#ingr-form-container");
+        let addButton = document.querySelector("#add-form");
+        let totalForms = document.querySelector("#id_ingredients-TOTAL_FORMS");
 
-        let formNum = ingredientForm.length - 1
-        addButton.addEventListener('click', addForm)
+        let formNum = ingredientForm.length - 1;
+        addButton.addEventListener('click', addForm);
+        console.log(totalForms);
+
 
         function addForm(e){
-            e.preventDefault()
+            e.preventDefault();
+            console.log("addForm function triggered!");
 
-            let newForm = ingredientForm[0].cloneNode(true)
-            let formRegex = RegExp('form-(\\d){1}-', 'g')
+            let newForm = ingredientForm[0].cloneNode(true);
+            let formRegex = RegExp(`id_ingredients-(\\d){1}-`,'g');
+            let formRegex2 = RegExp(`ingredients-(\\d){1}-`,'g');
 
-            formNum++
-            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
-            container.insertBefore(newForm, addButton)
+            formNum++;
+            console.log("Before ID replacement:", newForm.innerHTML);
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `id_ingredients-${formNum}-`);
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex2, `ingredients-${formNum}-`);
+            console.log("After ID replacement:", newForm.innerHTML);
+            container.insertBefore(newForm, addButton);
 
-            totalForms.setAttribute('value', `${formNum+1}`)
+            totalForms.setAttribute('value', `${formNum + 1}`);
         }
     </script>
 {% endblock %}

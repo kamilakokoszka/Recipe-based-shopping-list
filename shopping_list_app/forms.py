@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from django.forms import modelformset_factory
+from django.forms import inlineformset_factory
 
 from shopping_list_app.models import Recipe, Ingredient
 
@@ -20,10 +20,19 @@ class UserLoginForm(AuthenticationForm):
 
 
 class RecipeForm(forms.ModelForm):
+
     class Meta:
         model = Recipe
-        exclude = ['user', 'ingredients']
+        exclude = ['user', ]
 
 
-IngredientFormset = modelformset_factory(Ingredient, fields=(
-    "name", "quantity", 'unit', 'category'), extra=1)
+class IngredientForm(forms.ModelForm):
+
+    class Meta:
+        model = Ingredient
+        exclude = ('recipe', )
+
+
+IngredientFormset = inlineformset_factory(
+    Recipe, Ingredient, form=IngredientForm,
+    fields=['name', 'quantity', 'unit', 'category'], extra=1, can_delete=False)

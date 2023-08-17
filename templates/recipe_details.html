@@ -33,7 +33,8 @@
                     {% endfor %}
                 </tbody>
             </table>
-        <a href="">Modify recipe</a>
-        <a href="{% url 'delete-recipe' recipe_id=recipe.id %}">Delete recipe</a>
+        <a href="{% url 'recipe-update' recipe_id=recipe.id %}">Modify recipe</a>
+        <a href="{% url 'recipe-delete' recipe_id=recipe.id %}">Delete recipe</a>
+        <a href="{% url 'recipe-list' %}">Back</a>
     </div>
 {% endblock %}

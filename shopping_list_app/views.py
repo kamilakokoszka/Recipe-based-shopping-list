@@ -70,9 +70,9 @@ class RecipeListView(LoginRequiredMixin, ListView):
                                                     'user': user})
 
 
-class CreateRecipeView(LoginRequiredMixin, TemplateView):
+class RecipeCreateView(LoginRequiredMixin, TemplateView):
     model = Recipe
-    template_name = 'add_recipe.html'
+    template_name = 'recipe_create.html'
     form_class = RecipeForm
     success_url = None
     login_url = '/login/'
@@ -118,7 +118,7 @@ class RecipeDetailsView(LoginRequiredMixin, View):
     def get(self, request, recipe_id):
         recipe = Recipe.objects.get(id=recipe_id)
         ingredients = recipe.ingredients.all()
-        return render(request, 'recipe_view.html', {'recipe': recipe,
+        return render(request, 'recipe_details.html', {'recipe': recipe,
                                                     'ingredients': ingredients})
 
 

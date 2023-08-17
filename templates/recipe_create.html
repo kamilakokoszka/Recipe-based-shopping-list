@@ -8,7 +8,7 @@
         {% csrf_token %}
         {{ form.as_p }}
         <h2>Add ingredients</h2>
-        <div id="ingr-form-container">
+        <div id="ingredient-form-container">
             {{ ingredient_formset.management_form }}
             {% for form in ingredient_formset %}
                 <div class="ingredient-form">
@@ -22,31 +22,25 @@
 
     <script>
         let ingredientForm = document.querySelectorAll(".ingredient-form");
-        let container = document.querySelector("#ingr-form-container");
+        let container = document.querySelector("#ingredient-form-container");
         let addButton = document.querySelector("#add-form");
         let totalForms = document.querySelector("#id_ingredients-TOTAL_FORMS");
 
         let formNum = ingredientForm.length - 1;
-        addButton.addEventListener('click', addForm);
-        console.log(totalForms);
 
-
-        function addForm(e){
+        addButton.addEventListener('click', function(e){
             e.preventDefault();
-            console.log("addForm function triggered!");
 
             let newForm = ingredientForm[0].cloneNode(true);
             let formRegex = RegExp(`id_ingredients-(\\d){1}-`,'g');
             let formRegex2 = RegExp(`ingredients-(\\d){1}-`,'g');
 
             formNum++;
-            console.log("Before ID replacement:", newForm.innerHTML);
             newForm.innerHTML = newForm.innerHTML.replace(formRegex, `id_ingredients-${formNum}-`);
             newForm.innerHTML = newForm.innerHTML.replace(formRegex2, `ingredients-${formNum}-`);
-            console.log("After ID replacement:", newForm.innerHTML);
             container.insertBefore(newForm, addButton);
 
             totalForms.setAttribute('value', `${formNum + 1}`);
-        }
+        })
     </script>
 {% endblock %}

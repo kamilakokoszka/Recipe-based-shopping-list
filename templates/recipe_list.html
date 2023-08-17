@@ -26,13 +26,13 @@
                             <td>{{ recipe.portions }}</td>
                             <td>
                                 <a href="{% url 'recipe-details' recipe_id=recipe.id %}">View</a>
-                                <a href="{% url 'delete-recipe' recipe_id=recipe.id %}">Delete</a>
+                                <a href="{% url 'recipe-delete' recipe_id=recipe.id %}">Delete</a>
                             </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         {% endif %}
-        <a href="{% url 'add-recipe' %}">Add recipe</a>
+        <a href="{% url 'recipe-create' %}">Add recipe</a>
     </div>
 {% endblock %}

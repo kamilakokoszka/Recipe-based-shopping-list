@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 
 from shopping_list_app.forms import (
-    UserLoginForm, RecipeForm, IngredientFormset)
+    UserLoginForm, RecipeForm, IngredientFormset, IngredientUpdateFormset)
 from shopping_list_app.models import (
     ShoppingList, Recipe, Ingredient)
 
@@ -87,15 +87,15 @@ class CreateRecipeView(LoginRequiredMixin, TemplateView):
         form = RecipeForm(request.POST or None)
         formset = IngredientFormset(request.POST or None)
 
-        if form.is_valid():
+        if form.is_valid() and formset.is_valid():
             recipe = form.save(commit=False)
             recipe.user = self.request.user
             recipe.save()
-            if formset.is_valid():
-                ingredients = formset.save(commit=False)
-                for ingredient in ingredients:
-                    ingredient.recipe = recipe
-                    ingredient.save()
+
+            ingredients = formset.save(commit=False)
+            for ingredient in ingredients:
+                ingredient.recipe = recipe
+                ingredient.save()
 
             return redirect(reverse_lazy('recipe-list'))
 
@@ -122,39 +122,39 @@ class RecipeDetailsView(LoginRequiredMixin, View):
                                                     'ingredients': ingredients})
 
 
-"""class RecipeUpdateView(LoginRequiredMixin, TemplateView):
+class RecipeUpdateView(LoginRequiredMixin, TemplateView):
+    model = Recipe
     template_name = 'recipe_update.html'
+    form_class = RecipeForm
+    success_url = None
     login_url = '/login/'
 
     def get(self, request, recipe_id):
         recipe = Recipe.objects.get(id=recipe_id, user=request.user)
         form = RecipeForm(instance=recipe)
-        formset = IngredientUpdateFormset(queryset=recipe.ingredients.all())
-        return render(request, self.template_name, {'form': form, 'ingredient_formset': formset})
+        formset = IngredientUpdateFormset(instance=recipe)
+        return self.render_to_response({'form': form,
+                                        'ingredient_formset': formset})
 
     def post(self, request, recipe_id):
-        recipe = get_object_or_404(Recipe, id=recipe_id, user=request.user)
+        recipe = Recipe.objects.get(id=recipe_id, user=request.user)
         form = RecipeForm(request.POST, instance=recipe)
-        formset = IngredientUpdateFormset(request.POST, request.FILES)
+        formset = IngredientUpdateFormset(request.POST, instance=recipe)
 
         if form.is_valid() and formset.is_valid():
-            updated_recipe = form.save()
-            updated_ingredients = formset.save(commit=False)
+            recipe = form.save(commit=False)
+            recipe.user = self.request.user
+            recipe.save()
 
-            for updated_ingredient in updated_ingredients:
-                if recipe.ingredients.filter(id=updated_ingredient.id).exists():
-                    pass
-                else:
-                    updated_ingredient.recipe = updated_recipe
-                    updated_ingredient.save()
+            for ingredient_form in formset.deleted_forms:
+                ingredient_form.instance.delete()
 
-            # ingredients = recipe.ingredients.all()
-            # for ingredient in ingredients:
-            #     if ingredient not in updated_ingredients:
-            #         ingredient.delete()
+            ingredients = formset.save(commit=False)
+            for ingredient in ingredients:
+                ingredient.recipe = recipe
+                ingredient.save()
 
-            return redirect(f'/recipe/details/{recipe_id}/')
+            return redirect(reverse_lazy('recipe-details', kwargs={'recipe_id': recipe_id}))
 
         return self.render_to_response({'form': form,
                                         'ingredient_formset': formset})
-"""

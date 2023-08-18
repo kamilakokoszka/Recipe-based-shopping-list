@@ -28,9 +28,11 @@ urlpatterns = [
                                                 next_page='home-page'),
          name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
-    path('recipes/', views.RecipeListView.as_view(), name='recipe-list'),
+    path('recipe/list/', views.RecipeListView.as_view(), name='recipe-list'),
     path('recipe/details/<int:recipe_id>/', views.RecipeDetailsView.as_view(), name='recipe-details'),
-    path('add-recipe/', views.RecipeCreateView.as_view(), name='recipe-create'),
+    path('recipe/create/', views.RecipeCreateView.as_view(), name='recipe-create'),
     path('recipe/delete/<int:recipe_id>/', views.RecipeDeleteView.as_view(), name='recipe-delete'),
-    path('edit-recipe/<int:recipe_id>/', views.RecipeUpdateView.as_view(), name='recipe-update')
+    path('recipe/update/<int:recipe_id>/', views.RecipeUpdateView.as_view(), name='recipe-update'),
+    path('ingredient/create/', views.IndependentIngredientCreateView.as_view(), name='ingredient-create'),
+    path('ingredient/list/', views.IndependentIngredientListView.as_view(), name='ingredient-list'),
 ]

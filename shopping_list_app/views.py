@@ -1,4 +1,5 @@
 from django.contrib.auth import login
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -10,9 +11,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 
 from shopping_list_app.forms import (
-    UserLoginForm, RecipeForm, IngredientFormset, IngredientUpdateFormset)
+    UserLoginForm, RecipeForm, IngredientFormset, IngredientUpdateFormset, IndependentIngredientForm)
 from shopping_list_app.models import (
-    ShoppingList, Recipe, Ingredient)
+    ShoppingList, Recipe, Ingredient, IndependentIngredient)
 
 
 def index(request):
@@ -158,3 +159,31 @@ class RecipeUpdateView(LoginRequiredMixin, TemplateView):
 
         return self.render_to_response({'form': form,
                                         'ingredient_formset': formset})
+
+
+class IndependentIngredientCreateView(LoginRequiredMixin, CreateView):
+    login_url = '/login/'
+    form_class = IndependentIngredientForm
+    template_name = 'ingredient_create.html'
+
+    def get_success_url(self):
+        return reverse_lazy('ingredient-list')
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.user = self.request.user
+        obj = form.save()
+        self.object = obj
+
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class IndependentIngredientListView(LoginRequiredMixin, ListView):
+    login_url = "/login/"
+    redirect_field_name = 'next'
+
+    def get(self, request):
+        user = self.request.user
+        independent_ingredients = IndependentIngredient.objects.filter(user=user).order_by('name')
+        return render(request, 'ingredient_list.html', {'ingredients': independent_ingredients,
+                                                    'user': user})

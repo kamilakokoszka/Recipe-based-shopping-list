@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %} Independent ingredient list {% endblock %}
+
+{%  block content %}
+    <div>
+        {% if not ingredients %}
+            You don't have any independent ingredients yet.
+        {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Ingredient</th>
+                        <th>Quantity</th>
+                        <th>Unit</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ingredient in ingredients %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ ingredient.name }}</td>
+                            <td>{{ ingredient.quantity }}</td>
+                            <td>{{ ingredient.unit }}</td>
+                            <td>{{ ingredient.category }}</td>
+                            <td>
+                                <a href="">Edit</a>
+                                <a href="">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        <a href="{% url 'ingredient-create' %}">Add ingredient</a>
+    </div>
+{% endblock %}

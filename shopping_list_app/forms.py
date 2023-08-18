@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import inlineformset_factory
 
-from shopping_list_app.models import Recipe, Ingredient
+from shopping_list_app.models import Recipe, Ingredient, IndependentIngredient
 
 
 class UserLoginForm(AuthenticationForm):
@@ -36,3 +36,14 @@ class IngredientForm(forms.ModelForm):
 IngredientFormset = inlineformset_factory(
     Recipe, Ingredient, form=IngredientForm,
     fields=['name', 'quantity', 'unit', 'category'], extra=1, can_delete=False)
+
+IngredientUpdateFormset = inlineformset_factory(
+    Recipe, Ingredient, form=IngredientForm,
+    fields=['name', 'quantity', 'unit', 'category'], extra=0, can_delete=True)
+
+
+class IndependentIngredientForm(forms.ModelForm):
+
+    class Meta:
+        model = IndependentIngredient
+        exclude = ('user', )

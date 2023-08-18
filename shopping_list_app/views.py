@@ -187,3 +187,12 @@ class IndependentIngredientListView(LoginRequiredMixin, ListView):
         independent_ingredients = IndependentIngredient.objects.filter(user=user).order_by('name')
         return render(request, 'ingredient_list.html', {'ingredients': independent_ingredients,
                                                     'user': user})
+
+
+class IndependentIngredientDeleteView(LoginRequiredMixin, DeleteView):
+    login_url = '/login/'
+
+    def get(self, request, ingredient_id):
+        ingredient = IndependentIngredient.objects.get(id=ingredient_id)
+        ingredient.delete()
+        return redirect('ingredient-list')

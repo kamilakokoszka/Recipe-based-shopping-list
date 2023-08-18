@@ -27,7 +27,7 @@
                             <td>{{ ingredient.category }}</td>
                             <td>
                                 <a href="">Edit</a>
-                                <a href="">Delete</a>
+                                <a href="{% url 'ingredient-delete' ingredient_id=ingredient.id%}">Delete</a>
                             </td>
                         </tr>
                     {% endfor %}

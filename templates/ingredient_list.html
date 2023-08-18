@@ -26,7 +26,7 @@
                             <td>{{ ingredient.unit }}</td>
                             <td>{{ ingredient.category }}</td>
                             <td>
-                                <a href="">Edit</a>
+                                <a href="{% url 'ingredient-update' ingredient_id=ingredient.id %}">Edit</a>
                                 <a href="{% url 'ingredient-delete' ingredient_id=ingredient.id%}">Delete</a>
                             </td>
                         </tr>

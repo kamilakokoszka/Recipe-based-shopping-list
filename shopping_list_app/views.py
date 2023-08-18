@@ -104,7 +104,7 @@ class RecipeCreateView(LoginRequiredMixin, TemplateView):
                                         'ingredient_formset': formset})
 
 
-class RecipeDeleteView(LoginRequiredMixin, DeleteView):
+class RecipeDeleteView(LoginRequiredMixin, View):
     login_url = '/login/'
 
     def get(self, request, recipe_id):
@@ -189,10 +189,34 @@ class IndependentIngredientListView(LoginRequiredMixin, ListView):
                                                     'user': user})
 
 
-class IndependentIngredientDeleteView(LoginRequiredMixin, DeleteView):
+class IndependentIngredientDeleteView(LoginRequiredMixin, View):
     login_url = '/login/'
 
     def get(self, request, ingredient_id):
         ingredient = IndependentIngredient.objects.get(id=ingredient_id)
         ingredient.delete()
         return redirect('ingredient-list')
+
+
+class IndependentIngredientUpdateView(LoginRequiredMixin, TemplateView):
+    login_url = '/login/'
+    template_name = 'ingredient_update.html'
+    form_class = IndependentIngredientForm
+
+    def get(self, request, ingredient_id):
+        ingredient = IndependentIngredient.objects.get(id=ingredient_id, user=request.user)
+        form = IndependentIngredientForm(instance=ingredient)
+        return self.render_to_response({'form': form})
+
+    def post(self, request, ingredient_id):
+        ingredient = IndependentIngredient.objects.get(id=ingredient_id, user=request.user)
+        form = IndependentIngredientForm(request.POST, instance=ingredient)
+
+        if form.is_valid():
+            ingredient = form.save(commit=False)
+            ingredient.user = self.request.user
+            ingredient.save()
+
+            return redirect(reverse_lazy('ingredient-list'))
+
+        return self.render_to_response({'form': form})

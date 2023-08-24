@@ -4,6 +4,7 @@
 
 {%  block content %}
     <h1>Create independent ingredient</h1>
+    <p>Create ingredient you often buy in certain quantity.</p>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

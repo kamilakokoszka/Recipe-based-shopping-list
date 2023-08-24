@@ -5,23 +5,23 @@
 {%  block content %}
 <div>
     <p>
-        You have {{ no_of_shopping_lists }} active shopping lists right now.
+        You have {{ no_of_shopping_lists }} active shopping list{{ no_of_shopping_lists|pluralize }} right now.
     </p>
-    <a href="">View all lists</a>
-    <a href="">Create new list</a>
+    <a href="{% url 'shoppinglist-list' %}">View all lists</a>
+    <a href="{% url 'shoppinglist-create' %}">Create new list</a>
 </div>
 <div>
     <p>
-        You have {{ no_of_recipes }} recipes in your cooking book.
+        You have {{ no_of_recipes }} recipe{{ no_of_recipes|pluralize }} in your cooking book.
     </p>
     <a href="{% url 'recipe-list' %}">View cooking book</a>
     <a href="{% url 'recipe-create' %}">Add new recipe</a>
 </div>
 <div>
     <p>
-        You have {{ no_of_ingredients }} different ingredients in your database.
+        You have {{ no_of_ingredients }} different frequently purchased ingredient{{ no_of_ingredients|pluralize }} in your database.
     </p>
-    <a href="">View all ingredients</a>
-    <a href="">Add new ingredient</a>
+    <a href="{% url 'ingredient-list' %}">View all ingredients</a>
+    <a href="{% url 'ingredient-create' %}">Add new ingredient</a>
 </div>
 {% endblock %}

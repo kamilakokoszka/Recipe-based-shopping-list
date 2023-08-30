@@ -261,17 +261,23 @@ class ShopingListDetails(LoginRequiredMixin, TemplateView):
     def get(self, request, shopping_list_id):
         shopping_list = ShoppingList.objects.get(id=shopping_list_id)
         recipes = shopping_list.recipes.all()
-        ingredient_dict = defaultdict(lambda: {'quantity': 0, 'category': None})
+        recipes_ingredients_dict = defaultdict(lambda: {'quantity': 0, 'category': None})
+        independent_ingredients = shopping_list.independent_ingredients.all().order_by('category')
+
         for recipe in recipes:
             ingredients = recipe.ingredients.all()
             for ingredient in ingredients:
-                entry = ingredient_dict[ingredient.name]
+                entry = recipes_ingredients_dict[ingredient.name]
                 entry['quantity'] += ingredient.quantity
                 entry['category'] = ingredient.category
-        summarized_ingredients = [Ingredient(name=name, quantity=info['quantity'], category=info['category'])
-                                  for name, info in ingredient_dict.items()]
+
+        summarized_recipes_ingredients = [Ingredient(name=name, quantity=info['quantity'], category=info['category'])
+                                  for name, info in recipes_ingredients_dict.items()]
+        summarized_recipes_ingredients.sort(key=lambda x: x.category)
+
         return render(request, 'shopping_list_details.html', {'shopping_list': shopping_list,
-                                                    'ingredient_list': summarized_ingredients})
+                                                    'ingredient_list': summarized_recipes_ingredients,
+                                                    'independent_ingredients': independent_ingredients})
 
 
 class ShoppingListDeleteView(LoginRequiredMixin, View):

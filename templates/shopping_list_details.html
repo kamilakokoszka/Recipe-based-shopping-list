@@ -19,14 +19,28 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td>Recipes ingredients</td>
+                    </tr>
                     {% for ingredient in ingredient_list %}
-
                         <tr>
                             <td>{{ forloop.counter }}</td>
                             <td>{{ ingredient.name }}</td>
                             <td>{{ ingredient.quantity }}</td>
                             <td>{{ ingredient.unit }}</td>
                             <td>{{ ingredient.category }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td>Other ingredients</td>
+                    </tr>
+                    {% for independent_ingredient in independent_ingredients %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ independent_ingredient.name }}</td>
+                            <td>{{ independent_ingredient.quantity }}</td>
+                            <td>{{ independent_ingredient.unit }}</td>
+                            <td>{{ independent_ingredient.category }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

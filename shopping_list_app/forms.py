@@ -54,7 +54,7 @@ class ShoppingListForm(forms.ModelForm):
 
     class Meta:
         model = ShoppingList
-        fields = ['name', 'recipes']
+        fields = ['name', 'recipes', 'independent_ingredients']
 
     recipes = forms.ModelMultipleChoiceField(
         queryset=Recipe.objects.all(),
@@ -63,3 +63,9 @@ class ShoppingListForm(forms.ModelForm):
         widget=forms.CheckboxSelectMultiple(attrs={'class': 'horizontal-checkbox-list'})
     )
 
+    independent_ingredients = forms.ModelMultipleChoiceField(
+        queryset=IndependentIngredient.objects.all(),
+        to_field_name='name',
+        required=False,
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'horizontal-checkbox-list'}),
+    )

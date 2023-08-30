@@ -1,3 +1,6 @@
+from collections import defaultdict
+from datetime import date
+
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
@@ -11,7 +14,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 
 from shopping_list_app.forms import (
-    UserLoginForm, RecipeForm, IngredientFormset, IngredientUpdateFormset, IndependentIngredientForm)
+    UserLoginForm, RecipeForm, IngredientFormset, IngredientUpdateFormset, IndependentIngredientForm, ShoppingListForm)
 from shopping_list_app.models import (
     ShoppingList, Recipe, Ingredient, IndependentIngredient)
 
@@ -20,7 +23,7 @@ def index(request):
     """View function for home page"""
     if request.user.is_authenticated:
         user = request.user
-        no_of_shopping_lists = ShoppingList.objects.filter(user=user)
+        no_of_shopping_lists = ShoppingList.objects.filter(user=user).count()
         no_of_recipes = Recipe.objects.filter(user=user).count()
         no_of_ingredients = Ingredient.objects.count()
         return render(request, 'home.html', {'user': user,
@@ -220,3 +223,63 @@ class IndependentIngredientUpdateView(LoginRequiredMixin, TemplateView):
             return redirect(reverse_lazy('ingredient-list'))
 
         return self.render_to_response({'form': form})
+
+
+class ShoppingListView(LoginRequiredMixin, TemplateView):
+    login_url = '/login/'
+    redirect_field_name = 'next'
+
+    def get(self, request):
+        user = self.request.user
+        shopping_lists = ShoppingList.objects.filter(user=user).order_by('creation_date')
+        return render(request, 'shopping_list_list.html', {'shopping_lists': shopping_lists,
+                                                    'user': user})
+
+
+class ShoppingListCreateView(LoginRequiredMixin, CreateView):
+    login_url = '/login/'
+    form_class = ShoppingListForm
+    template_name = 'shopping_list_create.html'
+
+    def get_success_url(self):
+        return reverse_lazy('shoppinglist-list')
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.user = self.request.user
+        obj.creation_date = date.today()
+        obj = form.save()
+        self.object = obj
+
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class ShopingListDetails(LoginRequiredMixin, TemplateView):
+    login_url = '/login/'
+    template_name = 'shopping_list_details.html'
+
+    def get(self, request, shopping_list_id):
+        shopping_list = ShoppingList.objects.get(id=shopping_list_id)
+        recipes = shopping_list.recipes.all()
+        ingredient_dict = defaultdict(lambda: {'quantity': 0, 'category': None})
+        for recipe in recipes:
+            ingredients = recipe.ingredients.all()
+            for ingredient in ingredients:
+                entry = ingredient_dict[ingredient.name]
+                entry['quantity'] += ingredient.quantity
+                entry['category'] = ingredient.category
+        summarized_ingredients = [Ingredient(name=name, quantity=info['quantity'], category=info['category'])
+                                  for name, info in ingredient_dict.items()]
+        return render(request, 'shopping_list_details.html', {'shopping_list': shopping_list,
+                                                    'ingredient_list': summarized_ingredients})
+
+
+class ShoppingListDeleteView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request, shopping_list_id):
+        shopping_list = ShoppingList.objects.get(id=shopping_list_id)
+        shopping_list.delete()
+        return redirect('shoppinglist-list')
+
+

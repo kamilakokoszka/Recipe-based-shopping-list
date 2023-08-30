@@ -37,4 +37,8 @@ urlpatterns = [
     path('ingredient/list/', views.IndependentIngredientListView.as_view(), name='ingredient-list'),
     path('ingredient/delete/<int:ingredient_id>/', views.IndependentIngredientDeleteView.as_view(), name='ingredient-delete'),
     path('ingredient/update/<int:ingredient_id>/', views.IndependentIngredientUpdateView.as_view(), name='ingredient-update'),
+    path('shoppinglist/list/', views.ShoppingListView.as_view(), name='shoppinglist-list'),
+    path('shoppinglist/create/', views.ShoppingListCreateView.as_view(), name='shoppinglist-create'),
+    path('shoppinglist/details/<int:shopping_list_id>/', views.ShopingListDetails.as_view(), name='shoppinglist-details'),
+    path('shoppinglist/delete/<int:shopping_list_id>/', views.ShoppingListDeleteView.as_view(), name='shoppinglist-delete'),
 ]

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %} Shopping list details {% endblock %}
+
+{%  block content %}
+    <div>
+        <h1> {{ shopping_list.name }}</h1>
+        <p>( {{ shopping_list.creation_date|date:"d.m.Y" }} )</p>
+        <h3>Ingredients:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Ingredient</th>
+                        <th>Quantity</th>
+                        <th>Unit</th>
+                        <th>Category</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ingredient in ingredient_list %}
+
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ ingredient.name }}</td>
+                            <td>{{ ingredient.quantity }}</td>
+                            <td>{{ ingredient.unit }}</td>
+                            <td>{{ ingredient.category }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        <a href="">Delete shopping list</a>
+        <a href="{% url 'shoppinglist-list' %}">Back</a>
+    </div>
+{% endblock %}
+
+<script>
+
+</script>

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %} Recipe list {% endblock %}
+
+{%  block content %}
+    <div>
+        {% if not shopping_lists %}
+            You don't have any shopping lists yet.
+        {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Shopping list</th>
+                        <th>Creation date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for shopping_list in shopping_lists %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ shopping_list.name }}</td>
+                            <td>{{ shopping_list.creation_date|date:"d.m.Y" }}</td>
+                            <td>
+                                <a href="{% url 'shoppinglist-details' shopping_list_id=shopping_list.id %}">View</a>
+                                <a href="{% url 'shoppinglist-delete' shopping_list_id=shopping_list.id %}">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        <a href="{% url 'shoppinglist-create' %}">Create shopping list</a>
+    </div>
+{% endblock %}

@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, DateField
 
-from shopping_list_app.models import Recipe, Ingredient, IndependentIngredient
+from recipe_based_shopping_list import settings
+from shopping_list_app.models import Recipe, Ingredient, IndependentIngredient, ShoppingList
 
 
 class UserLoginForm(AuthenticationForm):
@@ -47,3 +48,18 @@ class IndependentIngredientForm(forms.ModelForm):
     class Meta:
         model = IndependentIngredient
         exclude = ('user', )
+
+
+class ShoppingListForm(forms.ModelForm):
+
+    class Meta:
+        model = ShoppingList
+        fields = ['name', 'recipes']
+
+    recipes = forms.ModelMultipleChoiceField(
+        queryset=Recipe.objects.all(),
+        to_field_name='name',
+        required=True,
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'horizontal-checkbox-list'})
+    )
+

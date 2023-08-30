@@ -43,17 +43,28 @@ class Ingredient(models.Model):
     category = models.CharField(choices=CATEGORIES, default='Other')
     recipe = models.ForeignKey(Recipe, related_name='ingredients', on_delete=models.CASCADE)
 
+
+class IndependentIngredient(models.Model):
+    name = models.CharField(max_length=64)
+    quantity = models.FloatField(max_length=6)
+    unit = models.CharField(choices=UNITS, default='pc')
+    category = models.CharField(choices=CATEGORIES, default='Other')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.get_formatted_quantity()} {self.unit})"
 
-
-class IndependentIngredient(Ingredient):
-    pass
+    def get_formatted_quantity(self):
+        if self.quantity % 1 == 0:
+            return str(int(self.quantity))
+        else:
+            return str(self.quantity)
 
 
 class ShoppingList(models.Model):
     name = models.CharField(max_length=128, default='Shopping list')
     recipes = models.ManyToManyField(Recipe)
+    independent_ingredients = models.ManyToManyField(IndependentIngredient, blank=True)
     creation_date = models.DateField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 

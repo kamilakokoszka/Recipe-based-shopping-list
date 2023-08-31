@@ -1,5 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
-from django.contrib.auth.models import User, AbstractUser
+
 
 UNITS = (
     ('g', 'gram'),
@@ -7,20 +8,22 @@ UNITS = (
     ('pc', 'piece'),
     ('tsp', 'teaspoon'),
     ('tbsp', 'tablespoon'),
-    ('pinch', 'pinch')
+    ('pinch', 'pinch'),
+    ('btl', 'bottle')
 )
 
 CATEGORIES = (
-    ('bakery and bread', ' Bakery and Bread'),
-    ('meat and seafood', 'Meat and Seafood'),
-    ('pasta and rice', 'Pasta and Rice'),
-    ('oils and sauces', 'Oils and Sauces'),
-    ('dairy and eggs', 'Dairy and eggs'),
-    ('fruits', 'Fruits'),
-    ('vegetables', 'Vegetables'),
-    ('spices', 'Spices'),
-    ('other', 'Other')
+    ('bakery and bread', ' bakery and bread'),
+    ('meat and seafood', 'meat and seafood'),
+    ('pasta and rice', 'pasta and rice'),
+    ('oils and sauces', 'oils and sauces'),
+    ('dairy and eggs', 'dairy and eggs'),
+    ('fruits', 'fruits'),
+    ('vegetables', 'vegetables'),
+    ('spices', 'spices'),
+    ('other', 'other')
 )
+
 
 class Recipe(models.Model):
     name = models.CharField(max_length=128)
@@ -40,15 +43,24 @@ class Ingredient(models.Model):
     name = models.CharField(max_length=64)
     quantity = models.FloatField(max_length=6)
     unit = models.CharField(choices=UNITS, default='g')
-    category = models.CharField(choices=CATEGORIES, default='Other')
+    category = models.CharField(choices=CATEGORIES, default='other')
     recipe = models.ForeignKey(Recipe, related_name='ingredients', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+    def get_formatted_quantity(self):
+        if self.quantity % 1 == 0:
+            return str(int(self.quantity))
+        else:
+            return str(self.quantity)
 
 
 class IndependentIngredient(models.Model):
     name = models.CharField(max_length=64)
     quantity = models.FloatField(max_length=6)
     unit = models.CharField(choices=UNITS, default='pc')
-    category = models.CharField(choices=CATEGORIES, default='Other')
+    category = models.CharField(choices=CATEGORIES, default='other')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

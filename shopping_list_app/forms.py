@@ -1,9 +1,9 @@
-from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from django.forms import inlineformset_factory, DateField
 
-from recipe_based_shopping_list import settings
-from shopping_list_app.models import Recipe, Ingredient, IndependentIngredient, ShoppingList
+from django import forms
+from django.forms import inlineformset_factory
+
+from shopping_list_app.models import (Recipe, Ingredient, IndependentIngredient, ShoppingList)
 
 
 class UserLoginForm(AuthenticationForm):
@@ -24,14 +24,14 @@ class RecipeForm(forms.ModelForm):
 
     class Meta:
         model = Recipe
-        exclude = ['user', ]
+        fields = ['name', 'description', 'link', 'portions']
 
 
 class IngredientForm(forms.ModelForm):
 
     class Meta:
         model = Ingredient
-        exclude = ('recipe', )
+        fields = ['name', 'quantity', 'unit', 'category']
 
 
 IngredientFormset = inlineformset_factory(
@@ -47,7 +47,7 @@ class IndependentIngredientForm(forms.ModelForm):
 
     class Meta:
         model = IndependentIngredient
-        exclude = ('user', )
+        fields = ['name', 'quantity', 'unit', 'category']
 
 
 class ShoppingListForm(forms.ModelForm):

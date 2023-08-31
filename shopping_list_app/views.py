@@ -1,20 +1,24 @@
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render, redirect
+
+from django.urls import reverse_lazy
+from django.views import View
+from django.views.generic import (CreateView, FormView, ListView, TemplateView)
+
 from collections import defaultdict
 from datetime import date
 
-from django.contrib.auth import login, authenticate
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
-from django.views import View
-from django.views.generic import (
-    CreateView, FormView, ListView, TemplateView, DeleteView)
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.mixins import LoginRequiredMixin
-
+from shopping_list_app.models import (ShoppingList, Recipe, Ingredient, IndependentIngredient)
 from shopping_list_app.forms import (
-    UserLoginForm, RecipeForm, IngredientFormset, IngredientUpdateFormset, IndependentIngredientForm, ShoppingListForm)
-from shopping_list_app.models import (
-    ShoppingList, Recipe, Ingredient, IndependentIngredient)
+    UserLoginForm,
+    RecipeForm,
+    IngredientFormset,
+    IngredientUpdateFormset,
+    IndependentIngredientForm,
+    ShoppingListForm)
+
 
 
 def index(request):
@@ -111,13 +115,15 @@ class RecipeDeleteView(LoginRequiredMixin, View):
 
 
 class RecipeDetailsView(LoginRequiredMixin, View):
+    template_name = 'recipe_details.html'
     login_url = '/login/'
+    redirect_field_name = 'next'
 
     def get(self, request, recipe_id):
         recipe = Recipe.objects.get(id=recipe_id)
         ingredients = recipe.ingredients.all()
-        return render(request, 'recipe_details.html', {'recipe': recipe,
-                                                       'ingredients': ingredients})
+        return render(request, self.template_name, {'recipe': recipe,
+                                                    'ingredients': ingredients})
 
 
 class RecipeUpdateView(LoginRequiredMixin, View):
@@ -156,6 +162,18 @@ class RecipeUpdateView(LoginRequiredMixin, View):
                                                     'ingredient_formset': formset})
 
 
+class IndependentIngredientListView(LoginRequiredMixin, ListView):
+    model = IndependentIngredient
+    template_name = 'ingredient_list.html'
+    login_url = "/login/"
+    redirect_field_name = 'next'
+
+    def get_context_data(self, **kwargs):
+        context = super(IndependentIngredientListView, self).get_context_data(**kwargs)
+        context['ingredients'] = IndependentIngredient.objects.filter(user=self.request.user).order_by('category')
+        return context
+
+
 class IndependentIngredientCreateView(LoginRequiredMixin, CreateView):
     template_name = 'ingredient_create.html'
     form_class = IndependentIngredientForm
@@ -170,18 +188,6 @@ class IndependentIngredientCreateView(LoginRequiredMixin, CreateView):
         self.object = obj
 
         return redirect(self.success_url)
-
-
-class IndependentIngredientListView(LoginRequiredMixin, ListView):
-    model = IndependentIngredient
-    template_name = 'ingredient_list.html'
-    login_url = "/login/"
-    redirect_field_name = 'next'
-
-    def get_context_data(self, **kwargs):
-        context = super(IndependentIngredientListView, self).get_context_data(**kwargs)
-        context['ingredients'] = IndependentIngredient.objects.filter(user=self.request.user).order_by('category')
-        return context
 
 
 class IndependentIngredientDeleteView(LoginRequiredMixin, View):
@@ -247,9 +253,20 @@ class ShoppingListCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.success_url)
 
 
-class ShoppingListDetails(LoginRequiredMixin, TemplateView):
+class ShoppingListDeleteView(LoginRequiredMixin, View):
     login_url = '/login/'
+    redirect_field_name = 'next'
+
+    def get(self, request, shopping_list_id):
+        shopping_list = ShoppingList.objects.get(id=shopping_list_id)
+        shopping_list.delete()
+        return redirect('shoppinglist-list')
+
+
+class ShoppingListDetails(LoginRequiredMixin, View):
     template_name = 'shopping_list_details.html'
+    login_url = '/login/'
+    redirect_field_name = 'next'
 
     def get(self, request, shopping_list_id):
         shopping_list = ShoppingList.objects.get(id=shopping_list_id)
@@ -268,16 +285,6 @@ class ShoppingListDetails(LoginRequiredMixin, TemplateView):
                                           for name, info in recipes_ingredients_dict.items()]
         summarized_recipes_ingredients.sort(key=lambda x: x.category)
 
-        return render(request, 'shopping_list_details.html', {'shopping_list': shopping_list,
-                                                              'ingredient_list': summarized_recipes_ingredients,
-                                                              'independent_ingredients': independent_ingredients})
-
-
-class ShoppingListDeleteView(LoginRequiredMixin, View):
-    login_url = '/login/'
-    redirect_field_name = 'next'
-
-    def get(self, request, shopping_list_id):
-        shopping_list = ShoppingList.objects.get(id=shopping_list_id)
-        shopping_list.delete()
-        return redirect('shoppinglist-list')
+        return render(request, self.template_name, {'shopping_list': shopping_list,
+                                                    'ingredient_list': summarized_recipes_ingredients,
+                                                    'independent_ingredients': independent_ingredients})

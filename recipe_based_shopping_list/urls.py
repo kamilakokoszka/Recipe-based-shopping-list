@@ -14,9 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from shopping_list_app import views
 from django.contrib.auth import views as auth_views
+from django.urls import path
+from shopping_list_app import views
 from shopping_list_app.forms import UserLoginForm
 
 urlpatterns = [
@@ -25,8 +25,7 @@ urlpatterns = [
     path('register/', views.SignUpView.as_view(), name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='account/login.html',
                                                 authentication_form=UserLoginForm,
-                                                next_page='home-page'),
-         name='login'),
+                                                next_page='home-page'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     path('recipe/list/', views.RecipeListView.as_view(), name='recipe-list'),
     path('recipe/details/<int:recipe_id>/', views.RecipeDetailsView.as_view(), name='recipe-details'),
@@ -37,8 +36,8 @@ urlpatterns = [
     path('ingredient/list/', views.IndependentIngredientListView.as_view(), name='ingredient-list'),
     path('ingredient/delete/<int:ingredient_id>/', views.IndependentIngredientDeleteView.as_view(), name='ingredient-delete'),
     path('ingredient/update/<int:ingredient_id>/', views.IndependentIngredientUpdateView.as_view(), name='ingredient-update'),
-    path('shoppinglist/list/', views.ShoppingListView.as_view(), name='shoppinglist-list'),
-    path('shoppinglist/create/', views.ShoppingListCreateView.as_view(), name='shoppinglist-create'),
-    path('shoppinglist/details/<int:shopping_list_id>/', views.ShopingListDetails.as_view(), name='shoppinglist-details'),
-    path('shoppinglist/delete/<int:shopping_list_id>/', views.ShoppingListDeleteView.as_view(), name='shoppinglist-delete'),
+    path('shopping-list/list/', views.ShoppingListView.as_view(), name='shoppinglist-list'),
+    path('shopping-list/create/', views.ShoppingListCreateView.as_view(), name='shoppinglist-create'),
+    path('shopping-list/details/<int:shopping_list_id>/', views.ShoppingListDetails.as_view(), name='shoppinglist-details'),
+    path('shopping-list/delete/<int:shopping_list_id>/', views.ShoppingListDeleteView.as_view(), name='shoppinglist-delete'),
 ]

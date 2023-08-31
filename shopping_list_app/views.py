@@ -1,17 +1,15 @@
 from collections import defaultdict
 from datetime import date
 
-from django.contrib.auth import login
-from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import (
     CreateView, FormView, ListView, TemplateView, DeleteView)
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib import messages
 
 from shopping_list_app.forms import (
     UserLoginForm, RecipeForm, IngredientFormset, IngredientUpdateFormset, IndependentIngredientForm, ShoppingListForm)
@@ -25,7 +23,7 @@ def index(request):
         user = request.user
         no_of_shopping_lists = ShoppingList.objects.filter(user=user).count()
         no_of_recipes = Recipe.objects.filter(user=user).count()
-        no_of_ingredients = Ingredient.objects.count()
+        no_of_ingredients = IndependentIngredient.objects.count()
         return render(request, 'home.html', {'user': user,
                                              'no_of_shopping_lists': no_of_shopping_lists,
                                              'no_of_recipes': no_of_recipes,
@@ -41,13 +39,12 @@ class SignUpView(CreateView):
         return reverse_lazy('home-page')
 
     def form_valid(self, form):
-        user = form.save()
+        form.save()
+        username = self.request.POST['username']
+        password = self.request.POST['password']
+        user = authenticate(username=username, password=password)
         login(self.request, user)
-        messages.success(self.request, "Registration successful.")
         return HttpResponseRedirect(self.get_success_url())
-
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form))
 
 
 class UserLoginFormView(FormView):
@@ -57,10 +54,6 @@ class UserLoginFormView(FormView):
 
     def get_success_url(self):
         return reverse_lazy('home-page')
-
-    def form_invalid(self, form):
-        messages.error(self.request, 'Invalid username or password')
-        return self.render_to_response(self.get_context_data(form=form))
 
 
 class RecipeListView(LoginRequiredMixin, ListView):

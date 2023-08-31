@@ -57,14 +57,15 @@ class UserLoginFormView(FormView):
 
 
 class RecipeListView(LoginRequiredMixin, ListView):
+    model = Recipe
+    template_name = 'recipe_list.html'
     login_url = "/login/"
     redirect_field_name = 'next'
 
-    def get(self, request):
-        user = request.user
-        recipes = Recipe.objects.filter(user=user).order_by('name')
-        return render(request, 'recipe_list.html', {'recipes': recipes,
-                                                    'user': user})
+    def get_context_data(self, **kwargs):
+        context = super(RecipeListView, self).get_context_data(**kwargs)
+        context['recipes'] = Recipe.objects.filter(user=self.request.user).order_by('name')
+        return context
 
 
 class RecipeCreateView(LoginRequiredMixin, TemplateView):
@@ -175,14 +176,15 @@ class IndependentIngredientCreateView(LoginRequiredMixin, CreateView):
 
 
 class IndependentIngredientListView(LoginRequiredMixin, ListView):
+    model = IndependentIngredient
+    template_name = 'ingredient_list.html'
     login_url = "/login/"
     redirect_field_name = 'next'
 
-    def get(self, request):
-        user = self.request.user
-        independent_ingredients = IndependentIngredient.objects.filter(user=user).order_by('name')
-        return render(request, 'ingredient_list.html', {'ingredients': independent_ingredients,
-                                                    'user': user})
+    def get_context_data(self, **kwargs):
+        context = super(IndependentIngredientListView, self).get_context_data(**kwargs)
+        context['ingredients'] = IndependentIngredient.objects.filter(user=self.request.user).order_by('name')
+        return context
 
 
 class IndependentIngredientDeleteView(LoginRequiredMixin, View):
@@ -219,14 +221,15 @@ class IndependentIngredientUpdateView(LoginRequiredMixin, TemplateView):
 
 
 class ShoppingListView(LoginRequiredMixin, TemplateView):
-    login_url = '/login/'
+    model = ShoppingList
+    template_name = 'shopping_list_list.html'
+    login_url = "/login/"
     redirect_field_name = 'next'
 
-    def get(self, request):
-        user = self.request.user
-        shopping_lists = ShoppingList.objects.filter(user=user).order_by('creation_date')
-        return render(request, 'shopping_list_list.html', {'shopping_lists': shopping_lists,
-                                                    'user': user})
+    def get_context_data(self, **kwargs):
+        context = super(ShoppingListView, self).get_context_data(**kwargs)
+        context['shopping_lists'] = ShoppingList.objects.filter(user=self.request.user).order_by('-creation_date')
+        return context
 
 
 class ShoppingListCreateView(LoginRequiredMixin, CreateView):

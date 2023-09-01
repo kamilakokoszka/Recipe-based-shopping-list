@@ -72,7 +72,7 @@ class RecipeListView(LoginRequiredMixin, ListView):
 
 
 class RecipeCreateView(LoginRequiredMixin, View):
-    template_name = 'recipe_create.html'
+    template_name = 'recipe/recipe_create.html'
     success_url = reverse_lazy('recipe-list')
     login_url = '/login/'
     redirect_field_name = 'next'
@@ -114,7 +114,7 @@ class RecipeDeleteView(LoginRequiredMixin, View):
 
 
 class RecipeDetailsView(LoginRequiredMixin, View):
-    template_name = 'recipe_details.html'
+    template_name = 'recipe/recipe_details.html'
     login_url = '/login/'
     redirect_field_name = 'next'
 
@@ -126,7 +126,7 @@ class RecipeDetailsView(LoginRequiredMixin, View):
 
 
 class RecipeUpdateView(LoginRequiredMixin, View):
-    template_name = 'recipe_update.html'
+    template_name = 'recipe/recipe_update.html'
     login_url = '/login/'
     redirect_field_name = 'next'
 
@@ -200,7 +200,7 @@ class IndependentIngredientDeleteView(LoginRequiredMixin, View):
 
 
 class IndependentIngredientUpdateView(LoginRequiredMixin, View):
-    template_name = 'ingredient_update.html'
+    template_name = 'ingredient/ingredient_update.html'
     login_url = '/login/'
     redirect_field_name = 'next'
 
@@ -263,7 +263,7 @@ class ShoppingListDeleteView(LoginRequiredMixin, View):
 
 
 class ShoppingListDetails(LoginRequiredMixin, View):
-    template_name = 'shopping_list_details.html'
+    template_name = 'shopping_list/shopping_list_details.html'
     login_url = '/login/'
     redirect_field_name = 'next'
 

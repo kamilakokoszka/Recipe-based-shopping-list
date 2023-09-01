@@ -3,6 +3,16 @@
 {% block title %} Shopping list details {% endblock %}
 
 {%  block content %}
+    <style>
+        .active {
+            text-decoration: none;
+        }
+
+        .bought {
+            text-decoration: line-through;
+        }
+    </style>
+
     <div>
         <h1> {{ shopping_list.name }}</h1>
         <p>( {{ shopping_list.creation_date|date:"d.m.Y" }} )</p>
@@ -15,7 +25,7 @@
                         <th>Quantity</th>
                         <th>Unit</th>
                         <th>Category</th>
-                        <th></th>
+                        <th>Bought</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,9 +36,12 @@
                         <tr>
                             <td>{{ forloop.counter }}</td>
                             <td>{{ ingredient.name }}</td>
-                            <td>{{ ingredient.quantity }}</td>
+                            <td>{{ ingredient.get_formatted_quantity }}</td>
                             <td>{{ ingredient.unit }}</td>
                             <td>{{ ingredient.category }}</td>
+                            <td>
+                                <button class="ingredient-bought" type="button">X</button>
+                            </td>
                         </tr>
                     {% endfor %}
                     <tr>
@@ -38,18 +51,38 @@
                         <tr>
                             <td>{{ forloop.counter }}</td>
                             <td>{{ independent_ingredient.name }}</td>
-                            <td>{{ independent_ingredient.quantity }}</td>
+                            <td>{{ independent_ingredient.get_formatted_quantity }}</td>
                             <td>{{ independent_ingredient.unit }}</td>
                             <td>{{ independent_ingredient.category }}</td>
+                            <td>
+                                <button class="ingredient-bought" type="button">X</button>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-        <a href="">Delete shopping list</a>
+        <a href="{% url 'shoppinglist-delete' shopping_list_id=shopping_list.id %}">Delete shopping list</a>
         <a href="{% url 'shoppinglist-list' %}">Back</a>
     </div>
+
+    <script>
+        let boughtIngredientButtons = document.querySelectorAll(".ingredient-bought");
+
+        boughtIngredientButtons.forEach(button => {
+            let clickCounter = 0;
+
+            button.addEventListener("click", function () {
+                let listElement = this.closest("tr");
+
+                if (clickCounter % 2 === 0) {
+                    listElement.classList.remove("active");
+                    listElement.classList.add("bought");
+                } else {
+                    listElement.classList.remove("bought");
+                    listElement.classList.add("active");
+                }
+                clickCounter += 1;
+            });
+        });
+    </script>
 {% endblock %}
-
-<script>
-
-</script>

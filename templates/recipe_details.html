@@ -5,7 +5,7 @@
 {%  block content %}
     <div>
         <h1> {{ recipe.name }}</h1>
-        <p>( {{ recipe.portions }} portions )</p>
+        <p>( {{ recipe.portions }} portion{{ recipe.portions|pluralize }} )</p>
         <p>Link to full recipe:</p>
         <a href="{{ recipe.link }}">Click!</a>
         <h3>Description:</h3>
@@ -26,14 +26,14 @@
                         <tr>
                             <td>{{ forloop.counter }}</td>
                             <td>{{ ingredient.name }}</td>
-                            <td>{{ ingredient.quantity }}</td>
+                            <td>{{ ingredient.get_formatted_quantity }}</td>
                             <td>{{ ingredient.unit }}</td>
                             <td>{{ ingredient.category }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-        <a href="{% url 'recipe-update' recipe_id=recipe.id %}">Modify recipe</a>
+        <a href="{% url 'recipe-update' recipe_id=recipe.id %}">Update recipe</a>
         <a href="{% url 'recipe-delete' recipe_id=recipe.id %}">Delete recipe</a>
         <a href="{% url 'recipe-list' %}">Back</a>
     </div>

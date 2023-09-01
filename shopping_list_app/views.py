@@ -20,7 +20,6 @@ from shopping_list_app.forms import (
     ShoppingListForm)
 
 
-
 def index(request):
     """View function for home page"""
     if request.user.is_authenticated:
@@ -62,7 +61,7 @@ class UserLoginFormView(FormView):
 
 class RecipeListView(LoginRequiredMixin, ListView):
     model = Recipe
-    template_name = 'recipe_list.html'
+    template_name = 'recipe/recipe_list.html'
     login_url = "/login/"
     redirect_field_name = 'next'
 
@@ -164,7 +163,7 @@ class RecipeUpdateView(LoginRequiredMixin, View):
 
 class IndependentIngredientListView(LoginRequiredMixin, ListView):
     model = IndependentIngredient
-    template_name = 'ingredient_list.html'
+    template_name = 'ingredient/ingredient_list.html'
     login_url = "/login/"
     redirect_field_name = 'next'
 
@@ -175,7 +174,7 @@ class IndependentIngredientListView(LoginRequiredMixin, ListView):
 
 
 class IndependentIngredientCreateView(LoginRequiredMixin, CreateView):
-    template_name = 'ingredient_create.html'
+    template_name = 'ingredient/ingredient_create.html'
     form_class = IndependentIngredientForm
     success_url = reverse_lazy('ingredient-list')
     login_url = '/login/'
@@ -226,7 +225,7 @@ class IndependentIngredientUpdateView(LoginRequiredMixin, View):
 
 class ShoppingListView(LoginRequiredMixin, TemplateView):
     model = ShoppingList
-    template_name = 'shopping_list_list.html'
+    template_name = 'shopping_list/shopping_list_list.html'
     login_url = "/login/"
     redirect_field_name = 'next'
 
@@ -238,7 +237,7 @@ class ShoppingListView(LoginRequiredMixin, TemplateView):
 
 class ShoppingListCreateView(LoginRequiredMixin, CreateView):
     form_class = ShoppingListForm
-    template_name = 'shopping_list_create.html'
+    template_name = 'shopping_list/shopping_list_create.html'
     success_url = reverse_lazy('shoppinglist-list')
     login_url = '/login/'
     redirect_field_name = 'next'

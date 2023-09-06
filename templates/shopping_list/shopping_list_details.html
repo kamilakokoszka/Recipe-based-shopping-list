@@ -61,7 +61,10 @@
                     {% endfor %}
                 </tbody>
             </table>
-        <a href="{% url 'shoppinglist-delete' shopping_list_id=shopping_list.id %}">Delete shopping list</a>
+        <form method="POST" action="{% url 'shoppinglist-delete' pk=shopping_list.id %}">
+            {% csrf_token %}
+            <input type="submit" value="Delete shopping list">
+        </form>
         <a href="{% url 'shoppinglist-list' %}">Back</a>
     </div>
 

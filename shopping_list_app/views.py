@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import (CreateView, FormView, ListView, TemplateView)
+from django.views.generic import (CreateView, FormView, ListView, TemplateView, DeleteView)
 
 from collections import defaultdict
 from datetime import date
@@ -103,14 +103,12 @@ class RecipeCreateView(LoginRequiredMixin, View):
                                                     'ingredient_formset': formset})
 
 
-class RecipeDeleteView(LoginRequiredMixin, View):
+class RecipeDeleteView(LoginRequiredMixin, DeleteView):
+    model = Recipe
+    context_object_name = 'recipe'
+    success_url = reverse_lazy('recipe-list')
     login_url = '/login/'
     redirect_field_name = 'next'
-
-    def get(self, request, recipe_id):
-        recipe = Recipe.objects.get(id=recipe_id)
-        recipe.delete()
-        return redirect('recipe-list')
 
 
 class RecipeDetailsView(LoginRequiredMixin, View):
@@ -189,14 +187,12 @@ class IndependentIngredientCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.success_url)
 
 
-class IndependentIngredientDeleteView(LoginRequiredMixin, View):
+class IndependentIngredientDeleteView(LoginRequiredMixin, DeleteView):
+    model = IndependentIngredient
+    context_object_name = 'ingredient'
+    success_url = reverse_lazy('ingredient-list')
     login_url = '/login/'
     redirect_field_name = 'next'
-
-    def get(self, request, ingredient_id):
-        ingredient = IndependentIngredient.objects.get(id=ingredient_id)
-        ingredient.delete()
-        return redirect('ingredient-list')
 
 
 class IndependentIngredientUpdateView(LoginRequiredMixin, View):
@@ -252,14 +248,12 @@ class ShoppingListCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.success_url)
 
 
-class ShoppingListDeleteView(LoginRequiredMixin, View):
+class ShoppingListDeleteView(LoginRequiredMixin, DeleteView):
+    model = ShoppingList
+    context_object_name = 'shopping_list'
+    success_url = reverse_lazy('shoppinglist-list')
     login_url = '/login/'
     redirect_field_name = 'next'
-
-    def get(self, request, shopping_list_id):
-        shopping_list = ShoppingList.objects.get(id=shopping_list_id)
-        shopping_list.delete()
-        return redirect('shoppinglist-list')
 
 
 class ShoppingListDetails(LoginRequiredMixin, View):

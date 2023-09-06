@@ -34,7 +34,10 @@
                 </tbody>
             </table>
         <a href="{% url 'recipe-update' recipe_id=recipe.id %}">Update recipe</a>
-        <a href="{% url 'recipe-delete' recipe_id=recipe.id %}">Delete recipe</a>
+        <form method="POST" action="{% url 'recipe-delete' pk=recipe.id %}">
+            {% csrf_token %}
+            <input type="submit" value="Delete">
+        </form>
         <a href="{% url 'recipe-list' %}">Back</a>
     </div>
 {% endblock %}

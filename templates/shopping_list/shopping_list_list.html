@@ -24,7 +24,10 @@
                             <td>{{ shopping_list.creation_date|date:"d.m.Y" }}</td>
                             <td>
                                 <a href="{% url 'shoppinglist-details' shopping_list_id=shopping_list.id %}">View</a>
-                                <a href="{% url 'shoppinglist-delete' shopping_list_id=shopping_list.id %}">Delete</a>
+                                <form method="POST" action="{% url 'shoppinglist-delete' pk=shopping_list.id %}">
+                                    {% csrf_token %}
+                                    <input type="submit" value="Delete">
+                                </form>
                             </td>
                         </tr>
                     {% endfor %}

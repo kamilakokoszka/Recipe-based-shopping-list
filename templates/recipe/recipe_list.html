@@ -26,7 +26,10 @@
                             <td>{{ recipe.portions }}</td>
                             <td>
                                 <a href="{% url 'recipe-details' recipe_id=recipe.id %}">View</a>
-                                <a href="{% url 'recipe-delete' recipe_id=recipe.id %}">Delete</a>
+                                <form method="POST" action="{% url 'recipe-delete' pk=recipe.id %}">
+                                    {% csrf_token %}
+                                    <input type="submit" value="Delete">
+                                </form>
                             </td>
                         </tr>
                     {% endfor %}

@@ -27,7 +27,10 @@
                             <td>{{ ingredient.category }}</td>
                             <td>
                                 <a href="{% url 'ingredient-update' ingredient_id=ingredient.id %}">Edit</a>
-                                <a href="{% url 'ingredient-delete' ingredient_id=ingredient.id%}">Delete</a>
+                                <form method="POST" action="{% url 'ingredient-delete' pk=ingredient.id %}">
+                                    {% csrf_token %}
+                                    <input type="submit" value="Delete">
+                                </form>
                             </td>
                         </tr>
                     {% endfor %}

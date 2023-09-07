@@ -1,20 +1,31 @@
 from faker import Faker
-from random import randint
+from random import randint, sample
 
 from shopping_list_app.models import Recipe, Ingredient, IndependentIngredient, ShoppingList
 from django.contrib.auth.models import User
 
-faker = Faker("en_EN")
+faker = Faker("en_US")
 
 
 def create_fake_user():
     User.objects.create(username=faker.name(), password=faker.password())
 
 
+def create_fake_recipe():
+    create_fake_user()
+
+    description = faker.paragraph(nb_sentences=1, ext_word_list=['abc', 'def', 'ghi', 'jkl'])
+    Recipe.objects.create(name=f'Recipe x',
+                          description=description,
+                          link=faker.url(),
+                          portions=randint(1, 4),
+                          user=User.objects.first())
+
+
 def create_fake_recipes():
     create_fake_user()
 
-    for _ in range(3):
+    for _ in range(1, 4):
         description = faker.paragraph(nb_sentences=1, ext_word_list=['abc', 'def', 'ghi', 'jkl'])
         Recipe.objects.create(name=f'Recipe {_}',
                               description=description,
@@ -36,6 +47,13 @@ def create_fake_ingredients():
                               recipe=recipes[randint(0, 2)])
 
 
+def create_fake_ingredient():
+    create_fake_recipe()
+    recipe = Recipe.objects.first()
+
+    Ingredient.objects.create(name='cucumber', quantity='1', unit='pc', category='vegetables', recipe=recipe)
+
+
 def create_fake_independent_ingredients():
     create_fake_user()
     user = User.objects.first()
@@ -45,19 +63,20 @@ def create_fake_independent_ingredients():
     IndependentIngredient.objects.create(name='watermelon', quantity='1', unit='pc', category='fruits', user=user)
 
 
-def create_shopping_list():
-    create_fake_user()
-    create_fake_recipes()
+def create_fake_shopping_list():
+    create_fake_ingredients()
     create_fake_independent_ingredients()
     user = User.objects.first()
 
     for _ in range(0, 3):
         recipes = Recipe.objects.order_by('?')
         independent_ingredients = IndependentIngredient.objects.order_by('?')
-        random_recipes = recipes[0, 2]
-        random_independent_ingredient = independent_ingredients[0]
-        ShoppingList.objects.create(name=f'Shopping list {_}',
-                                    recipes=random_recipes,
-                                    independent_ingredients=random_independent_ingredient,
-                                    creation_date=faker.date_this_month(),
-                                    user=user)
+        random_recipes = sample(list(recipes), 3)
+        random_independent_ingredient = sample(list(independent_ingredients), 1)
+        shopping_list = ShoppingList.objects.create(name=f'Shopping list {_}',
+                                                    creation_date=faker.date_this_month(),
+                                                    user=user)
+        shopping_list.recipes.set(random_recipes)
+        shopping_list.independent_ingredients.set(random_independent_ingredient)
+
+

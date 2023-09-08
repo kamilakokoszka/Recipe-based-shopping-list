@@ -27,4 +27,3 @@ def user():
 @pytest.fixture
 def set_up():
     create_fake_shopping_list()
-

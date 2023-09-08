@@ -3,15 +3,19 @@ import pytest
 from django.template.response import TemplateResponse
 from django.urls import reverse
 
-from shopping_list_app.models import Recipe, Ingredient, IndependentIngredient, ShoppingList
+from shopping_list_app.models import (
+    Recipe,
+    Ingredient,
+    IndependentIngredient,
+    ShoppingList
+)
 
 
 # ---------- Recipe views tests ---------- #
 @pytest.mark.django_db
 def test_recipe_list(client, user, set_up):
     client.login(username='Superadmin', password='123password')
-    response = client.get('/recipe/list/')
-
+    response = client.get(reverse('recipe-list'))
     recipes = response.context_data['recipes']
 
     assert response.status_code == 200
@@ -22,7 +26,6 @@ def test_recipe_list(client, user, set_up):
 @pytest.mark.django_db
 def test_recipe_create(client, user, set_up):
     client.login(username='Superadmin', password='123password')
-
     recipes_before = Recipe.objects.count()
     ingredients_before = Ingredient.objects.count()
     last_recipe_id = Recipe.objects.last().id
@@ -33,7 +36,7 @@ def test_recipe_create(client, user, set_up):
     data = {
         'name': 'Recipe x',
         'description': 'abc',
-        'link': 'www.recipe.com',
+        'link': 'https://recipe.com',
         'portions': 4,
         'user': user.id,
         'ingredients-TOTAL_FORMS': 2,
@@ -49,11 +52,10 @@ def test_recipe_create(client, user, set_up):
         'ingredients-1-quantity': 1,
         'ingredients-1-unit': 'pc',
         'ingredients-1-category': 'vegetables',
-        'ingredients-1-id': (last_recipe_id + 1),
+        'ingredients-1-id': (last_recipe_id + 1)
     }
 
-    url = reverse('recipe-create')
-    response = client.post(url, data)
+    response = client.post(reverse('recipe-create'), data)
 
     assert response.status_code == 302
     assert Recipe.objects.count() == recipes_before + 1
@@ -71,7 +73,7 @@ def test_recipe_create(client, user, set_up):
 def test_recipe_details(client, user, set_up):
     client.login(username='Superadmin', password='123password')
     recipe = Recipe.objects.first()
-    response = client.get(f'/recipe/details/{recipe.id}/')
+    response = client.get(reverse('recipe-details', args=[recipe.id]))
 
     assert response.status_code == 200
 
@@ -83,8 +85,7 @@ def test_recipe_delete(client, user, set_up):
 
     assert Recipe.objects.filter(id=recipe.id).exists()
 
-    url = reverse('recipe-delete', args=[recipe.id])
-    response = client.post(url)
+    response = client.post(reverse('recipe-delete', args=[recipe.id]))
 
     assert response.status_code == 302
     assert not Recipe.objects.filter(id=recipe.id).exists()
@@ -98,17 +99,19 @@ def test_recipe_update(client, user, set_up):
 
     assert existing_ingredients.count() > 0
 
-    url = reverse('recipe-update', args=[recipe.id])
-
     data = {'name': 'Spaghetti',
             'description': 'xyz',
-            'link': 'www.spaghetti.com',
+            'link': 'https://spaghetti.com',
             'portions': 10,
             'user': user.id
             }
 
     updated_ingredients_data = [
-        {'id': ingredient.id, 'name': 'pepper', 'quantity': 500, 'unit': 'g', 'category': 'vegetables'}
+        {'id': ingredient.id,
+         'name': 'pepper',
+         'quantity': 500,
+         'unit': 'g',
+         'category': 'vegetables'}
         for ingredient in existing_ingredients
     ]
 
@@ -119,7 +122,7 @@ def test_recipe_update(client, user, set_up):
         for key, value in ingredient_data.items():
             data[f'ingredients-{index}-{key}'] = value
 
-    response = client.post(url, data)
+    response = client.post(reverse('recipe-update', args=[recipe.id]), data)
 
     assert response.status_code == 302
 
@@ -138,8 +141,7 @@ def test_recipe_update(client, user, set_up):
 @pytest.mark.django_db
 def test_ingredient_list(client, user, set_up):
     client.login(username='Superadmin', password='123password')
-    response = client.get('/ingredient/list/')
-
+    response = client.get(reverse('ingredient-list'))
     ingredients = response.context_data['ingredients']
 
     assert response.status_code == 200
@@ -150,7 +152,6 @@ def test_ingredient_list(client, user, set_up):
 @pytest.mark.django_db
 def test_ingredient_create(client, user, set_up):
     client.login(username='Superadmin', password='123password')
-
     ingredients_before = IndependentIngredient.objects.count()
 
     assert ingredients_before > 0
@@ -177,8 +178,7 @@ def test_ingredient_delete(client, user, set_up):
 
     assert IndependentIngredient.objects.filter(id=ingredient.id).exists()
 
-    url = reverse('ingredient-delete', args=[ingredient.id])
-    response = client.post(url)
+    response = client.post(reverse('ingredient-delete', args=[ingredient.id]))
 
     assert response.status_code == 302
     assert not IndependentIngredient.objects.filter(id=ingredient.id).exists()
@@ -189,8 +189,6 @@ def teste_ingredient_update(client, user, set_up):
     client.login(username='Superadmin', password='123password')
     ingredient = IndependentIngredient.objects.first()
 
-    url = reverse('ingredient-update', args=[ingredient.id])
-
     data = {
         'name': 'sunflower oil',
         'quantity': 2,
@@ -199,7 +197,8 @@ def teste_ingredient_update(client, user, set_up):
         'user': user.id
     }
 
-    response = client.post(url, data)
+    response = client.post(reverse('ingredient-update',
+                                   args=[ingredient.id]), data)
 
     assert response.status_code == 302
 
@@ -207,3 +206,65 @@ def teste_ingredient_update(client, user, set_up):
 
     assert ingredient.name == 'sunflower oil'
     assert ingredient.quantity == 2
+
+
+# ---------- Shopping list views tests ---------- #
+@pytest.mark.django_db
+def test_shopping_list_list(client, user, set_up):
+    client.login(username='Superadmin', password='123password')
+    response = client.get(reverse('shoppinglist-list'))
+    shopping_lists = response.context_data['shopping_lists']
+
+    assert response.status_code == 200
+    assert isinstance(response, TemplateResponse)
+    assert ShoppingList.objects.count() == len(shopping_lists)
+
+
+@pytest.mark.django_db
+def test_shopping_list_create(client, user, set_up):
+    client.login(username='Superadmin', password='123password')
+    shopping_lists_before = ShoppingList.objects.count()
+
+    assert shopping_lists_before > 0
+
+    data = {
+        'name': 'Birthday party',
+        'recipes': ['Recipe 1', 'Recipe 2'],
+        'independent_ingredients': 'butter',
+        'creation_date': '2023-09-09',
+        'user': user.id
+    }
+
+    response = client.post(reverse('shoppinglist-create'), data)
+
+    assert response.status_code == 302
+    assert ShoppingList.objects.count() == shopping_lists_before + 1
+
+    shopping_list = ShoppingList.objects.get(name='Birthday party')
+
+    assert shopping_list.recipes.count() == 2
+    assert shopping_list.independent_ingredients.count() == 1
+
+
+@pytest.mark.django_db
+def test_shopping_list_details(client, user, set_up):
+    client.login(username='Superadmin', password='123password')
+    shopping_list = ShoppingList.objects.first()
+    response = client.get(reverse('shoppinglist-details',
+                                  args=[shopping_list.id]))
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_shopping_list_delete(client, user, set_up):
+    client.login(username='Superadmin', password='123password')
+    shopping_list = ShoppingList.objects.first()
+
+    assert ShoppingList.objects.filter(id=shopping_list.id).exists()
+
+    response = client.post(reverse('shoppinglist-delete',
+                                   args=[shopping_list.id]))
+
+    assert response.status_code == 302
+    assert not ShoppingList.objects.filter(id=shopping_list.id).exists()

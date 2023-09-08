@@ -3,25 +3,25 @@
 {% block title %} Home {% endblock %}
 
 {%  block content %}
-<div>
+<div class="jumbotron">
     <p>
-        You have {{ no_of_shopping_lists }} active shopping list{{ no_of_shopping_lists|pluralize }} right now.
+        You have <b>{{ no_of_shopping_lists }}</b> active shopping list{{ no_of_shopping_lists|pluralize }} right now.
     </p>
-    <a href="{% url 'shoppinglist-list' %}">View all lists</a>
-    <a href="{% url 'shoppinglist-create' %}">Create new list</a>
+    <a class="btn btn-primary" href="{% url 'shoppinglist-list' %}" role="button">View all lists</a>
+    <a class="btn btn-primary" href="{% url 'shoppinglist-create' %}" role="button">Create new list</a>
 </div>
-<div>
+<div class="jumbotron">
     <p>
-        You have {{ no_of_recipes }} recipe{{ no_of_recipes|pluralize }} in your cooking book.
+        You have <b>{{ no_of_recipes }}</b> recipe{{ no_of_recipes|pluralize }} in your cooking book.
     </p>
-    <a href="{% url 'recipe-list' %}">View cooking book</a>
-    <a href="{% url 'recipe-create' %}">Add new recipe</a>
+    <a class="btn btn-primary" href="{% url 'recipe-list' %}" role="button">View cooking book</a>
+    <a class="btn btn-primary" href="{% url 'recipe-create' %}" role="button">Add new recipe</a>
 </div>
-<div>
+<div class="jumbotron">
     <p>
-        You have {{ no_of_ingredients }} different frequently purchased ingredient{{ no_of_ingredients|pluralize }} in your database.
+        You have <b>{{ no_of_ingredients }}</b> different frequently purchased ingredient{{ no_of_ingredients|pluralize }} in your database.
     </p>
-    <a href="{% url 'ingredient-list' %}">View all ingredients</a>
-    <a href="{% url 'ingredient-create' %}">Add new ingredient</a>
+    <a class="btn btn-primary" href="{% url 'ingredient-list' %}" role="button">View all ingredients</a>
+    <a class="btn btn-primary" href="{% url 'ingredient-create' %}" role="button">Add new ingredient</a>
 </div>
 {% endblock %}

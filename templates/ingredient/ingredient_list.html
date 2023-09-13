@@ -3,40 +3,41 @@
 {% block title %} Independent ingredient list {% endblock %}
 
 {%  block content %}
-    <div>
-        {% if not ingredients %}
-            You don't have any independent ingredients yet.
-        {% else %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Ingredient</th>
-                        <th>Quantity</th>
-                        <th>Unit</th>
-                        <th>Category</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for ingredient in ingredients %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ ingredient.name }}</td>
-                            <td>{{ ingredient.get_formatted_quantity }}</td>
-                            <td>{{ ingredient.unit }}</td>
-                            <td>{{ ingredient.category }}</td>
-                            <td>
-                                <a href="{% url 'ingredient-update' ingredient_id=ingredient.id %}">Edit</a>
-                                <form method="POST" action="{% url 'ingredient-delete' pk=ingredient.id %}">
-                                    {% csrf_token %}
-                                    <input type="submit" value="Delete">
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-        <a href="{% url 'ingredient-create' %}">Add ingredient</a>
+    {% if not ingredients %}
+        You don't have any independent ingredients yet.
+    {% else %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Ingredient</th>
+                <th>Quantity</th>
+                <th>Unit</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ingredient in ingredients %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ ingredient.name }}</td>
+                    <td>{{ ingredient.get_formatted_quantity }}</td>
+                    <td>{{ ingredient.unit }}</td>
+                    <td>{{ ingredient.category }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{% url 'ingredient-update' ingredient_id=ingredient.id %}">Edit</a>
+                        <form method="POST" action="{% url 'ingredient-delete' pk=ingredient.id %}" style="display: inline-block;">
+                            {% csrf_token %}
+                            <input class="btn btn-primary" type="submit" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    <div class="text-center">
+        <a class="btn btn-primary" href="{% url 'ingredient-create' %}">Add ingredient</a>
     </div>
 {% endblock %}

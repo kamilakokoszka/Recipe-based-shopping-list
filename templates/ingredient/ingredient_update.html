@@ -2,12 +2,20 @@
 
 {% block title %} Update ingredient {% endblock %}
 
+{% load crispy_forms_tags %}
 {%  block content %}
-    <h1>Update ingredient</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Update">
-    </form>
-    <a href="{% url 'ingredient-list' %}">Back</a>
+    <div class="card">
+        <h1>Update ingredient</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="text-center">
+                <input class="btn btn-primary" type="submit" value="Update">
+            </div>
+        </form>
+        <hr>
+        <div class="text-center">
+            <a class="btn btn-primary" href="{% url 'ingredient-list' %}">Back</a>
+        </div>
+    </div>
 {% endblock %}

@@ -2,12 +2,17 @@
 
 {% block title %} Create ingredient {% endblock %}
 
+{% load crispy_forms_tags %}
 {%  block content %}
-    <h1>Create independent ingredient</h1>
-    <p>Create ingredient you often buy in certain quantity.</p>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Create ingredient">
-    </form>
+    <div class="card">
+        <h1>Create independent ingredient</h1>
+        <p>Create ingredient you often buy in certain quantity.</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="text-center">
+                <input class="btn btn-primary" type="submit" value="Create ingredient">
+            </div>
+        </form>
+    </div>
 {% endblock %}

@@ -3,37 +3,37 @@
 {% block title %} Shopping lists {% endblock %}
 
 {%  block content %}
-    <div>
-        {% if not shopping_lists %}
-            You don't have any shopping lists yet.
-        {% else %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Shopping list</th>
-                        <th>Creation date</th>
-                        <th>Actions</th>
+    {% if not shopping_lists %}
+        You don't have any shopping lists yet.
+    {% else %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Shopping list</th>
+                <th>Creation date</th>
+                <th>Actions</th>
                     </tr>
-                </thead>
-                <tbody>
-                    {% for shopping_list in shopping_lists %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ shopping_list.name }}</td>
-                            <td>{{ shopping_list.creation_date|date:"d.m.Y" }}</td>
-                            <td>
-                                <a href="{% url 'shoppinglist-details' shopping_list_id=shopping_list.id %}">View</a>
-                                <form method="POST" action="{% url 'shoppinglist-delete' pk=shopping_list.id %}">
-                                    {% csrf_token %}
-                                    <input type="submit" value="Delete">
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-        <a href="{% url 'shoppinglist-create' %}">Create shopping list</a>
+            </thead>
+            <tbody>
+            {% for shopping_list in shopping_lists %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ shopping_list.name }}</td>
+                    <td>{{ shopping_list.creation_date|date:"d.m.Y" }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{% url 'shoppinglist-details' shopping_list_id=shopping_list.id %}">View</a>
+                        <form method="POST" action="{% url 'shoppinglist-delete' pk=shopping_list.id %}" style="display: inline-block;">
+                            {% csrf_token %}
+                            <input class="btn btn-primary" type="submit" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    <div class="text-center">
+        <a class="btn btn-primary" href="{% url 'shoppinglist-create' %}">Create shopping list</a>
     </div>
 {% endblock %}

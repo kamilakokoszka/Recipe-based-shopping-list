@@ -2,11 +2,14 @@
 
 {% block title %} Create shopping list {% endblock %}
 
+{% load crispy_forms_tags %}
 {%  block content %}
-    <h1>Create new shopping list</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Create shopping list">
-    </form>
+    <div class="card">
+        <h1>Create new shopping list</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input class="btn btn-primary" type="submit" value="Create shopping list">
+        </form>
+    </div>
 {% endblock %}

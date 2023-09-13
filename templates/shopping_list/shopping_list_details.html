@@ -13,11 +13,11 @@
         }
     </style>
 
-    <div>
-        <h1> {{ shopping_list.name }}</h1>
-        <p>( {{ shopping_list.creation_date|date:"d.m.Y" }} )</p>
+    <div class="card">
+        <h1 class="mx-auto"> {{ shopping_list.name }}</h1>
+        <p class="mx-auto">( {{ shopping_list.creation_date|date:"d.m.Y" }} )</p>
         <h3>Ingredients:</h3>
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -29,33 +29,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Recipes ingredients</td>
-                    </tr>
+                    <td class="font-weight-bold" colspan="6" style="text-align:center; background-color: #F8F0E5">Recipes ingredients</td>
                     {% for ingredient in ingredient_list %}
-                        <tr>
+                        <tr style="background-color: #F8F0E5">
                             <td>{{ forloop.counter }}</td>
                             <td>{{ ingredient.name }}</td>
                             <td>{{ ingredient.get_formatted_quantity }}</td>
                             <td>{{ ingredient.unit }}</td>
                             <td>{{ ingredient.category }}</td>
                             <td>
-                                <button class="ingredient-bought" type="button">X</button>
+                                <button class="ingredient-bought btn btn-primary" type="button">X</button>
                             </td>
                         </tr>
                     {% endfor %}
-                    <tr>
-                        <td>Other ingredients</td>
-                    </tr>
+                    <td class="font-weight-bold" colspan="6" style="text-align:center; background-color: #F8F0E5">Other ingredients</td>
                     {% for independent_ingredient in independent_ingredients %}
-                        <tr>
+                        <tr style="background-color: #F8F0E5">
                             <td>{{ forloop.counter }}</td>
                             <td>{{ independent_ingredient.name }}</td>
                             <td>{{ independent_ingredient.get_formatted_quantity }}</td>
                             <td>{{ independent_ingredient.unit }}</td>
                             <td>{{ independent_ingredient.category }}</td>
                             <td>
-                                <button class="ingredient-bought" type="button">X</button>
+                                <button class="ingredient-bought btn btn-primary" type="button">X</button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -63,13 +59,17 @@
             </table>
         <form method="POST" action="{% url 'shoppinglist-delete' pk=shopping_list.id %}">
             {% csrf_token %}
-            <input type="submit" value="Delete shopping list">
+            <div class="text-center" >
+                <input class="btn btn-primary" type="submit" value="Delete shopping list">
+            </div>
         </form>
-        <a href="{% url 'shoppinglist-list' %}">Back</a>
+        <div class="text-center" >
+            <a class="btn btn-primary" href="{% url 'shoppinglist-list' %}" style="margin-top: 10px">Back</a>
+        </div>
     </div>
 
     <script>
-        let boughtIngredientButtons = document.querySelectorAll(".ingredient-bought");
+    let boughtIngredientButtons = document.querySelectorAll(".ingredient-bought");
 
         boughtIngredientButtons.forEach(button => {
             let clickCounter = 0;
@@ -87,5 +87,6 @@
                 clickCounter += 1;
             });
         });
+
     </script>
 {% endblock %}

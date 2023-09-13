@@ -133,7 +133,8 @@ class RecipeUpdateView(LoginRequiredMixin, View):
         form = RecipeForm(instance=recipe)
         formset = IngredientUpdateFormset(instance=recipe)
         return render(request, self.template_name, {'form': form,
-                                                    'ingredient_formset': formset})
+                                                    'ingredient_formset': formset,
+                                                    'recipe': recipe})
 
     def post(self, request, recipe_id):
         recipe = Recipe.objects.get(id=recipe_id, user=request.user)

@@ -3,38 +3,38 @@
 {% block title %} Recipe list {% endblock %}
 
 {%  block content %}
-        {% if not recipes %}
-            You don't have any recipes yet.
-        {% else %}
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Recipe</th>
-                        <th scope="col">No. of ingredients</th>
-                        <th scope="col">Portions</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for recipe in recipes %}
-                        <tr>
-                            <th scope="row">{{ forloop.counter }}</th>
-                            <td>{{ recipe.name }}</td>
-                            <td>{{ recipe.no_of_ingredients }}</td>
-                            <td>{{ recipe.portions }}</td>
-                            <td>
-                                <a class="btn btn-primary" href="{% url 'recipe-details' recipe_id=recipe.id %}" role="button">View</a>
-                                <form method="POST" action="{% url 'recipe-delete' pk=recipe.id %}" style="display: inline-block;">
-                                    {% csrf_token %}
-                                    <input class="btn btn-primary" type="submit" value="Delete">
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
+    {% if not recipes %}
+        You don't have any recipes yet.
+    {% else %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Recipe</th>
+                <th>No. of ingredients</th>
+                <th>Portions</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for recipe in recipes %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ recipe.name }}</td>
+                    <td>{{ recipe.no_of_ingredients }}</td>
+                    <td>{{ recipe.portions }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{% url 'recipe-details' recipe_id=recipe.id %}">View</a>
+                        <form method="POST" action="{% url 'recipe-delete' pk=recipe.id %}" style="display: inline-block;">
+                            {% csrf_token %}
+                            <input class="btn btn-primary" type="submit" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
     <div class="text-center">
         <a class="btn btn-primary center" href="{% url 'recipe-create' %}">Add recipe</a>
     </div>

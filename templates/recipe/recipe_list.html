@@ -3,7 +3,6 @@
 {% block title %} Recipe list {% endblock %}
 
 {%  block content %}
-    <div>
         {% if not recipes %}
             You don't have any recipes yet.
         {% else %}
@@ -36,7 +35,6 @@
                 </tbody>
             </table>
         {% endif %}
-    </div>
     <div class="text-center">
         <a class="btn btn-primary center" href="{% url 'recipe-create' %}">Add recipe</a>
     </div>

@@ -3,15 +3,14 @@
 {% block title %} Recipe details {% endblock %}
 
 {%  block content %}
-    <div>
-        <h1> {{ recipe.name }}</h1>
-        <p>( {{ recipe.portions }} portion{{ recipe.portions|pluralize }} )</p>
-        <p>Link to full recipe:</p>
-        <a href="{{ recipe.link }}">Click!</a>
+    <div class="card">
+        <h1 class="mx-auto"> {{ recipe.name }}</h1>
+        <p class="mx-auto">( {{ recipe.portions }} portion{{ recipe.portions|pluralize }} )</p>
+        <p>Link to full recipe: <a class="link" href="{{ recipe.link }}">Click!</a></p>
         <h3>Description:</h3>
         <p>{{ recipe.description }}</p>
         <h3>Ingredients:</h3>
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -23,7 +22,7 @@
                 </thead>
                 <tbody>
                     {% for ingredient in ingredients %}
-                        <tr>
+                        <tr style="background-color: #F8F0E5">
                             <td>{{ forloop.counter }}</td>
                             <td>{{ ingredient.name }}</td>
                             <td>{{ ingredient.get_formatted_quantity }}</td>
@@ -33,11 +32,13 @@
                     {% endfor %}
                 </tbody>
             </table>
-        <a href="{% url 'recipe-update' recipe_id=recipe.id %}">Update recipe</a>
-        <form method="POST" action="{% url 'recipe-delete' pk=recipe.id %}">
+    <div class="text-center" >
+        <a class="btn btn-primary" href="{% url 'recipe-update' recipe_id=recipe.id %}">Update recipe</a>
+        <form method="POST" action="{% url 'recipe-delete' pk=recipe.id %}" style="display: inline-block;">
             {% csrf_token %}
-            <input type="submit" value="Delete">
+            <input class="btn btn-primary" type="submit" value="Delete">
         </form>
-        <a href="{% url 'recipe-list' %}">Back</a>
+        <a class="btn btn-primary" href="{% url 'recipe-list' %}">Back</a>
+    </div>
     </div>
 {% endblock %}

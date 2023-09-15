@@ -20,7 +20,10 @@ by marking recipes they want to cook. It's perfect for individuals who like to p
 * **List Display:** View shopping lists, recipes and ingredient lists with detailed information.
 
 ## Recipe Based Shopping List App Preview
+<<<<<<< HEAD
 
+=======
+>>>>>>> a33d335b0175878cdd5f53bcd52dc4dd9695a88b
 ![ss_1](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/293aaaaf-c70a-49a1-aadc-64c78282ee96)
 ![ss_2](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/f6fe193f-c0b6-4ed7-833d-18721de60f7e)
 ![ss_3](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/134cfcd3-cd53-44d6-8a0e-0e3db170314c)

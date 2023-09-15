@@ -26,7 +26,7 @@ def index(request):
         user = request.user
         no_of_shopping_lists = ShoppingList.objects.filter(user=user).count()
         no_of_recipes = Recipe.objects.filter(user=user).count()
-        no_of_ingredients = IndependentIngredient.objects.count()
+        no_of_ingredients = IndependentIngredient.objects.filter(user=user).count()
         return render(request, 'home.html', {'user': user,
                                              'no_of_shopping_lists': no_of_shopping_lists,
                                              'no_of_recipes': no_of_recipes,
@@ -44,7 +44,7 @@ class SignUpView(CreateView):
     def form_valid(self, form):
         form.save()
         username = self.request.POST['username']
-        password = self.request.POST['password']
+        password = self.request.POST['password1']
         user = authenticate(username=username, password=password)
         login(self.request, user)
         return redirect(self.get_success_url())

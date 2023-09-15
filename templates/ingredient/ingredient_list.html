@@ -4,7 +4,9 @@
 
 {%  block content %}
     {% if not ingredients %}
-        You don't have any independent ingredients yet.
+        <div class="card" style="margin-bottom: 15px">
+            You don't have any independent ingredients yet.
+        </div>
     {% else %}
         <table class="table">
             <thead>

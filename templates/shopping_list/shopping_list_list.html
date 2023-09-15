@@ -4,7 +4,9 @@
 
 {%  block content %}
     {% if not shopping_lists %}
-        You don't have any shopping lists yet.
+        <div class="card" style="margin-bottom: 15px">
+            You don't have any shopping lists yet.
+        </div>
     {% else %}
         <table class="table">
             <thead>

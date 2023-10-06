@@ -31,7 +31,7 @@
                 <tbody>
                     <td class="font-weight-bold" colspan="6" style="text-align:center; background-color: #F8F0E5">Recipes ingredients</td>
                     {% for ingredient in ingredient_list %}
-                        <tr style="background-color: #F8F0E5">
+                        <tr id="ingredient{{ forloop.counter }}" style="background-color: #F8F0E5">
                             <td>{{ forloop.counter }}</td>
                             <td>{{ ingredient.name }}</td>
                             <td>{{ ingredient.get_formatted_quantity }}</td>
@@ -69,24 +69,34 @@
     </div>
 
     <script>
-    let boughtIngredientButtons = document.querySelectorAll(".ingredient-bought");
+        let boughtIngredientButtons = document.querySelectorAll(".ingredient-bought");
 
         boughtIngredientButtons.forEach(button => {
-            let clickCounter = 0;
+            let clickCounter = 1;
 
             button.addEventListener("click", function () {
                 let listElement = this.closest("tr");
 
                 if (clickCounter % 2 === 0) {
-                    listElement.classList.remove("active");
-                    listElement.classList.add("bought");
+                    listElement.className = "active";
                 } else {
-                    listElement.classList.remove("bought");
-                    listElement.classList.add("active");
+                    listElement.className = "bought";
                 }
+                let className = listElement.getAttribute("class");
+                localStorage.setItem(listElement.id, className);
                 clickCounter += 1;
             });
         });
 
+        document.addEventListener("DOMContentLoaded", function() {
+            boughtIngredientButtons.forEach(button => {
+                let listElement = button.closest("tr");
+                let savedClassName = localStorage.getItem(listElement.id);
+
+                if (savedClassName) {
+                    listElement.className = savedClassName;
+                }
+            });
+        });
     </script>
 {% endblock %}

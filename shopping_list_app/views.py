@@ -31,7 +31,7 @@ def index(request):
                                              'no_of_shopping_lists': no_of_shopping_lists,
                                              'no_of_recipes': no_of_recipes,
                                              'no_of_ingredients': no_of_ingredients})
-    return render(request, 'base.html')
+    return render(request, 'home_unauthenticated.html')
 
 
 class SignUpView(CreateView):

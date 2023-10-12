@@ -13,6 +13,10 @@ by marking recipes they want to cook. It's perfect for individuals who like to p
 
 App deployed on Vercel: https://recipe-based-shopping-list.vercel.app/
 
+Test account:
+* username: testuser
+* password: Testpass123
+
 ## Features
 
 * **User Authentication:** Create user accounts and log in and out securely.

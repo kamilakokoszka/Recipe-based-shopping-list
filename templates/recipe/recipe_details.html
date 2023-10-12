@@ -6,7 +6,9 @@
     <div class="card">
         <h1 class="mx-auto"> {{ recipe.name }}</h1>
         <p class="mx-auto">( {{ recipe.portions }} portion{{ recipe.portions|pluralize }} )</p>
-        <p>Link to full recipe: <a class="link" href="{{ recipe.link }}">Click!</a></p>
+        {% if recipe.link %}
+            <p>Link to full recipe: <a class="link" href="{{ recipe.link }}">Click!</a></p>
+        {% endif %}
         <h3>Description:</h3>
         <p>{{ recipe.description }}</p>
         <h3>Ingredients:</h3>

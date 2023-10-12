@@ -31,7 +31,7 @@
                 <tbody>
                     <td class="font-weight-bold" colspan="6" style="text-align:center; background-color: #F8F0E5">Recipes ingredients</td>
                     {% for ingredient in ingredient_list %}
-                        <tr id="ingredient{{ forloop.counter }}" style="background-color: #F8F0E5">
+                        <tr id="ingredient{{ forloop.counter }}" data-list-id="{{ shopping_list.id }}" style="background-color: #F8F0E5">
                             <td>{{ forloop.counter }}</td>
                             <td>{{ ingredient.name }}</td>
                             <td>{{ ingredient.get_formatted_quantity }}</td>
@@ -44,7 +44,7 @@
                     {% endfor %}
                     <td class="font-weight-bold" colspan="6" style="text-align:center; background-color: #F8F0E5">Other ingredients</td>
                     {% for independent_ingredient in independent_ingredients %}
-                        <tr style="background-color: #F8F0E5">
+                        <tr id="ingredient{{ forloop.counter }}" data-list-id="{{ shopping_list.id }}" style="background-color: #F8F0E5">
                             <td>{{ forloop.counter }}</td>
                             <td>{{ independent_ingredient.name }}</td>
                             <td>{{ independent_ingredient.get_formatted_quantity }}</td>
@@ -72,26 +72,33 @@
         let boughtIngredientButtons = document.querySelectorAll(".ingredient-bought");
 
         boughtIngredientButtons.forEach(button => {
-            let clickCounter = 1;
+            let listElement = button.closest("tr");
+            let listElementId = listElement.getAttribute("data-list-id");
+            let className = localStorage.getItem(`shoppingList_${listElementId}_${listElement.id}`);
+
+            if (className) {
+                listElement.className = className;
+            }
 
             button.addEventListener("click", function () {
                 let listElement = this.closest("tr");
+                let className = listElement.getAttribute("class");
 
-                if (clickCounter % 2 === 0) {
+                if (className === "bought") {
                     listElement.className = "active";
                 } else {
                     listElement.className = "bought";
                 }
-                let className = listElement.getAttribute("class");
-                localStorage.setItem(listElement.id, className);
-                clickCounter += 1;
+
+                localStorage.setItem(`shoppingList_${listElementId}_${listElement.id}`, listElement.className);
             });
         });
 
         document.addEventListener("DOMContentLoaded", function() {
             boughtIngredientButtons.forEach(button => {
                 let listElement = button.closest("tr");
-                let savedClassName = localStorage.getItem(listElement.id);
+                let listElementId = listElement.getAttribute("data-list-id");
+                let savedClassName = localStorage.getItem(`shoppingList_${listElementId}_${listElement.id}`);
 
                 if (savedClassName) {
                     listElement.className = savedClassName;

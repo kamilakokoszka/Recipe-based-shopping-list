@@ -25,7 +25,7 @@ Test account:
 * **Shopping List:** Generate shopping lists by selecting recipes from your cookbook and adding items from your independent ingredient list. Check off purchased items.
 * **List Display:** View shopping lists, recipes, and ingredient lists with detailed information.
 
-## Recipe Based Shopping List App Preview
+## Recipe-based Shopping List App Preview
 
 ![ss_1](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/293aaaaf-c70a-49a1-aadc-64c78282ee96)
 ![ss_2](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/091b1b01-d399-4241-b951-712291269978)

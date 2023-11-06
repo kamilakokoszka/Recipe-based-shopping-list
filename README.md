@@ -27,14 +27,14 @@ Test account:
 
 ## Recipe-based Shopping List App Preview
 
-![ss_1](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/293aaaaf-c70a-49a1-aadc-64c78282ee96)
+![ss_1](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/963a2939-89cd-49be-94d7-9fa7bb84d9fe)
 ![ss_2](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/091b1b01-d399-4241-b951-712291269978)
-![ss_3](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/134cfcd3-cd53-44d6-8a0e-0e3db170314c)
-![ss_4](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/325e3055-ecd9-423e-87ee-d53b6e73ec44)
-![ss_5](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/a21c5c54-1c58-4937-91e5-6de74a20bf63)
-![ss_6](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/d8001107-c760-4398-8af8-90e2143c6abc)
-![ss_7](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/a5c9b9d8-6f5e-439e-855d-09618d0f2b0d)
-![ss_8](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/7f2e489b-a2c3-44c1-9b0f-ea87daf26b43)
+![ss_3](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/9bdfb223-cce6-403f-ab59-d2633fe7f560)
+![ss_4](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/b8d2e07e-2bd0-4c88-b379-d36eed765caf)
+![ss_5](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/cea35d72-1670-4ee5-9392-00b8a3b065b1)
+![ss_6](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/123e8403-1407-4c79-b6bd-26de98eeeb85)
+![ss_7](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/df2ad360-7940-4029-9b00-f72d1a69fcc8)
+![ss_8](https://github.com/kamilakokoszka/Recipe-based-shopping-list/assets/127201515/81634b79-62a7-47af-b84e-088b2d32798d)
 
 ## Installation
 

@@ -15,11 +15,11 @@ by marking recipes they want to cook. It's perfect for individuals who like to p
 
 **App screenshots are available below.**
 
-~~App deployed on Vercel: https://recipe-based-shopping-list.vercel.app/~~
+App deployed on Vercel: https://recipe-based-shopping-list.vercel.app/
 
-~~Test account:~~
-* ~~username: testuser~~
-* ~~password: Testpass123~~
+Test account:
+* username: testuser
+* password: Testpass123
 
 ## Features
 

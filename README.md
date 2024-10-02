@@ -11,8 +11,6 @@
 Recipe-based shopping list is a Django-based web application that allows users to create shopping lists 
 by marking recipes they want to cook. It's perfect for individuals who like to plan their meals in advance.
 
-**Unfortunately, due to Railway database provider's temporary problems, the app is currently unavailable :(**
-
 **App screenshots are available below.**
 
 App deployed on Vercel: https://recipe-based-shopping-list.vercel.app/
